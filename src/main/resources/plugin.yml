@@ -1,0 +1,10 @@
+# Plugin info:
+name: RepairItem
+version: 1.6
+main: com.davidcubesvk.repairItem.RepairItem
+author: davidcubesvk
+api-version: 1.13
+# Commands:
+commands:
+  repair:
+    usage: /repair <function>

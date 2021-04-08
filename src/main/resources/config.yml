@@ -1,0 +1,215 @@
+# ┌------┐                         ┌--┐         ┌--┐   ┌--┐
+# |  ┌┐  |                         └--┘         |  |   |  |
+# |  └┘  | ┌-----┐ ┌-----┐ ┌-----┐ ┌--┐ ┌-----┐ |  | ┌-┘  └-┐ ┌-----┐ ┌-------┐
+# |    ┌-┘ |  -  | |  -  | |  -  | |  | |  ┌--┘ |  | └-┐  ┌-┘ |  -  | | ┌┐ ┌┐ |
+# |     \  | ┌---┘ | ┌---┘ | ┌-┐ | |  | |  |    |  |   |  |   | ┌---┘ | || || |
+# |  ┌┐  \ | └---┐ | |     | | | | |  | |  |    |  |   |  |   | └---┐ | || || |
+# └--┘└--┘ └-----┘ └-┘     └-┘ └-┘ └--┘ └--┘    └--┘   └--┘   └-----┘ └-┘└-┘└-┘
+# Plugin made by davidcubesvk.
+#
+# ► Don't understand / know how to set up (wanna know how actions work)?
+# All terms and setup process are available on my website. Link is in all of my plugins' descriptions.
+# ► Need any help?
+# Contact me through any of listed methods on my website, I'd like to help!
+#
+# ----------------------------------------------------------------------------------------------------------------------
+#                                                       Command
+# ----------------------------------------------------------------------------------------------------------------------
+command:
+  # Function argument (1st):
+  # - Info: This configuration is used to bind specific command arguments ("/repair ARGUMENT") to functions. For
+  #         example, specifying "inv" in the list for inventory repair will bind the argument to this function. That
+  #         means, if a player uses "/repair inv", the inventory will be repaired.
+  # - Note: Please note that one argument can be assigned to only one function, e.g. if you specify "inv" in inventory
+  #         repair, you can not specify (bind) it to armor repair, too.
+  function:
+    # Arguments assigned to plugin reload:
+    reload:
+      - "reload"
+      - "rl"
+    # Arguments assigned to help page:
+    help:
+      - "help"
+      - "?"
+    # Arguments assigned to all-item repair:
+    all:
+      - "all"
+    # Arguments assigned to inventory repair:
+    inventory:
+      - "inventory"
+      - "inv"
+    # Arguments assigned to armor repair:
+    armor:
+      - "armor"
+      - "armour"
+    # Arguments assigned to hot-bar repair:
+    hot-bar:
+      - "hot-bar"
+      - "hotbar"
+    # Arguments assigned to both-hands repair:
+    both-hands:
+      - "both-hands"
+      - "bothhands"
+      - "hands"
+    # Arguments assigned to main-hand repair:
+    main-hand:
+      - "main-hand"
+      - "mainhand"
+    # Arguments assigned to off-hand repair:
+    # - Note: Please note that this function is available only for server versions 1.9 and newer.
+    off-hand:
+      - "off-hand"
+      - "offhand"
+  # Target argument (2nd argument for repair functions):
+  target:
+    # Arguments representing all players:
+    all:
+      - "all"
+      - "*"
+# ----------------------------------------------------------------------------------------------------------------------
+#                                                     Blocked items
+# - Info: All sections need to have this format:
+#         - attribute: value
+#           [attribute: value]
+#           ...
+#         You can specify type, name, lore, enchantments, flags and unbreakable state for each item.
+#         Only specified properties are compared. If properties of any blocked item are equal to an item, it is
+#         considered blocked. For example, if default configuration all bow items with name "&6Legendary bow", no lore,
+#         no enchantments and no flags, with unbreakable state set to false, will be blocked. Please look at the wiki
+#         for more information.
+# ----------------------------------------------------------------------------------------------------------------------
+blocked-items:
+  # A blocked item:
+  - type: "BOW"
+    # The item's name:
+    name: "&6Legendary bow"
+    # The item's lore:
+    lore: []
+    # The list of item's enchantments:
+    # - Info: Each enchantment should be specified as "ENCHANTMENT:LEVEL".
+    enchantments: []
+    # The list of item's flags:
+    flags: []
+    # The unbreakable state:
+    # - Info: This states whether the item will not loose durability. This is not the an enchantment.
+    unbreakable: false
+# ----------------------------------------------------------------------------------------------------------------------
+#                                                   Command messages
+# ----------------------------------------------------------------------------------------------------------------------
+message:
+  # If the sender does not have the permission for the command:
+  no-permission: "&7[&aRepairItem&7] You do not have permission to run this command!"
+  # If the sender used an invalid format of the command:
+  invalid-format: "&7[&aRepairItem&7] Invalid format. Please use &a/repair help &7to see all commands."
+  # If the plugin was reloaded:
+  reload: "&7[&aRepairItem&7] Plugin reloaded."
+  # If the help page was requested:
+  help:
+    - "&7[&aRepairItem&7] &a&lHelp Page"
+    - "&a/repair all [target] &7- repairs everything (inventory and armor)"
+    - "&a/repair inv [target] &7- repairs the inventory (including both hands if supported)"
+    - "&a/repair armor [target] &7- repairs armor"
+    - "&a/repair hotbar [target] &7- repairs the hot-bar"
+    - "&a/repair hands [target] &7- repairs both hands (off-hand only if supported)"
+    - "&a/repair mainhand [target] &7- repairs the main-hand"
+    - "&a/repair offhand [target] &7- repairs the off-hand (only if supported)"
+    - "&7To repair items of other player, use &a[target]&7. To repair for all players, use &a*&7."
+  # If some of the repair functions was called (as per configured arguments above):
+  # - Info: If you do not want certain messages to be sent, leave them as "".
+  repair:
+    # Messages sent to the command sender (if target argument is not used, message from this section will be sent):
+    sender:
+      # If self-repair was requested from console:
+      player-only: "&7[&aRepairItem&7] Only players can use self-repair."
+      # If the target player is not online (if target argument was specified and the player (or nobody, if repairing
+      # for all players) is online):
+      player-not-found: "&7[&aRepairItem&7] The target player is not online or no player is online!"
+      # If the repair succeeded:
+      # - Placeholders: {target} - the target player, or placeholder as per configuration below
+      #                 {repaired} - amount of repaired items
+      # - Info: Repair is considered successful if at least 1 item was repaired - at least one item is in the range
+      #         of repair content (e.g. hot-bar) and it's repairable, not blocked, not already repaired and if no
+      #         other error occurred and the operation is supported.
+      success:
+        # If everything was repaired:
+        all: "&7[&aRepairItem&7] All items of player &a{target} &7were repaired (total: &a{repaired}&7)."
+        # If inventory was repaired:
+        inventory: "&7[&aRepairItem&7] Inventory of player &a{target} &7was repaired (total: &a{repaired}&7)."
+        # If armor contents were repaired:
+        armor: "&7[&aRepairItem&7] Armor of player &a{target} &7was repaired (total: &a{repaired}&7)."
+        # If hot-bar was repaired:
+        hot-bar: "&7[&aRepairItem&7] Hot-bar of player &a{target} &7was repaired (total: &a{repaired}&7)."
+        # If items in both hands were repaired:
+        both-hands: "&7[&aRepairItem&7] Both hands of player &a{target} &7were repaired (total: &a{repaired}&7)."
+        # If main-hand was repaired:
+        main-hand: "&7[&aRepairItem&7] Main-hand of player &a{target} &7was repaired."
+        # If off-hand was repaired:
+        # - Note: Please note that this function is available only for server versions 1.9 and newer.
+        off-hand: "&7[&aRepairItem&7] Off-hand of player &a{target} &7was repaired."
+      # If the repair failed (no item was repaired):
+      # - Placeholders: {target} - the target player, or placeholder as per configuration below
+      #                 {repaired} - amount of repaired items
+      fail:
+        # Specific fail message:
+        # - Info: Used if only one item was meant to be repaired and only for one player. Otherwise, more items are
+        #         involved and therefore, repair could have not failed due to the same reason.
+        specific:
+          # If no item could be repaired (there were no items, all of them were unrepairable, blocked or already repaired):
+          no-repairable-item: "&7[&aRepairItem&7] The item is not repairable. It may be blocked or already repaired."
+          # If off-hand repair was called while using server versions older than 1.9:
+          unsupported: "&7[&aRepairItem&7] Off-hand repair is not supported in versions older than 1.9."
+          # If another error occurred:
+          # - Info: This error should never occur. If so, look into the console for any errors on server startup. Server
+          #         restart might be needed.
+          other: "&7[&aRepairItem&7] An other error occurred. Please see the console and try again."
+        # If using all-player target (repair was performed to more than 1 player)/repairing more than one item and no
+        # items were repaired:
+        generalized: "&7[&aRepairItem&7] All items are blocked, already repaired, not repairable, off-hand is not supported (if off-hand repair was called) or another error occurred."
+      # Target placeholder ({target}):
+      target-placeholder:
+        # Replace with this if repair was called by themselves:
+        # - Info: This placeholder is used also if [target] is specified and the sender specified his/her own name.
+        self: "you"
+        # Replace with this if repair was called for all players:
+        # - Info: If online one player was online, his/her name is used.
+        all: "all"
+        # If [target] is a specific player, his/her name is used.
+    # Messages sent to specified target(s):
+    target:
+      # If the repair succeeded (if failed, only the sender will get the message):
+      # - Placeholders: {sender} - the name of the command sender (which caused the repair)
+      #                 {repaired} - amount of repaired items
+      success:
+        # If everything was repaired:
+        all: "&7[&aRepairItem&7] &a{sender} &7repaired all your items (total: &a{repaired}&7)."
+        # If inventory was repaired:
+        inventory: "&7[&aRepairItem&7] &a{sender} &7repaired your inventory (total: &a{repaired}&7)."
+        # If armor contents were repaired:
+        armor: "&7[&aRepairItem&7] &a{sender} &7repaired your armor (total: &a{repaired}&7)."
+        # If hot-bar was repaired:
+        hot-bar: "&7[&aRepairItem&7] &a{sender} &7repaired your hot-bar (total: &a{repaired}&7)."
+        # If items in both hands were repaired:
+        both-hands: "&7[&aRepairItem&7] &a{sender} &7repaired your hands (total: &a{repaired}&7)."
+        # If main-hand was repaired:
+        main-hand: "&7[&aRepairItem&7] &a{sender} &7repaired your main-hand (total: &a{repaired}&7)."
+        # If off-hand was repaired:
+        # - Note: Please note that this function is available only for server versions 1.9 and newer.
+        off-hand: "&7[&aRepairItem&7] &a{sender} &7repaired your off-hand (total: &a{repaired}&7)."
+      # If the repair failed (no item was repaired):
+      # - Placeholders: {sender} - the name of the command sender (which caused the repair)
+      #                 {repaired} - amount of repaired items
+      fail:
+        # Specific fail message:
+        # - Info: Used if only one item was meant to be repaired and only for one player. Otherwise, more items are
+        #         involved and therefore, repair could have not failed due to the same reason.
+        specific:
+          # If no item could be repaired (there were no items, all of them were unrepairable, blocked or already repaired):
+          no-repairable-item: "&7[&aRepairItem&7] &a{sender} &7tried to repair your item, but it is not repairable. It may be blocked or already repaired."
+          # If off-hand repair was called while using server versions older than 1.9:
+          unsupported: "&7[&aRepairItem&7] &a{sender} &7tried to repair your item, but off-hand repair is not supported in versions older than 1.9."
+          # If another error occurred:
+          # - Info: This error should never occur. If so, look into the console for any errors on server startup. Server
+          #         restart might be needed.
+          other: "&7[&aRepairItem&7] &a{sender} &7tried to repair your item, but an other error occurred. Please see the console and try again."
+        # If repairing more than one item and no items were repaired:
+        generalized: "&7[&aRepairItem&7] &a{sender} &7tried to repair your items, but all items are blocked, already repaired, not repairable, off-hand is not supported (if off-hand repair was called) or another error occurred."
