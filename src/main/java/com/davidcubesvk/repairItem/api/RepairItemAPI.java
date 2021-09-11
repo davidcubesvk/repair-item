@@ -20,7 +20,7 @@ public class RepairItemAPI {
     }
 
     /**
-     * Sets the repairer instance used by the API to the specified one. This should never be used outside the plugin.
+     * Sets the repairer instance used by the API to the specified one. <b>This should never be used outside the plugin.</b>
      *
      * @param repairer the repairer instance
      */

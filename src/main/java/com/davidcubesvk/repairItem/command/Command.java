@@ -38,9 +38,9 @@ public class Command implements CommandExecutor {
         OFF_HAND("offHand"), RELOAD("reload"), HELP("help");
 
         //The path
-        private String path;
+        private final String path;
         //The permission suffix
-        private String permissionSuffix;
+        private final String permissionSuffix;
 
         /**
          * Initializes the path and permission.
@@ -87,11 +87,6 @@ public class Command implements CommandExecutor {
     public static final String PATH_REPAIR_SENDER = PATH_MAIN + ".repair.sender";
 
     /**
-     * The path of the sender-success message section.
-     */
-    public static final String PATH_REPAIR_SENDER_SUCCESS = PATH_REPAIR_SENDER + ".success";
-
-    /**
      * The path of the sender-fail message section.
      */
     public static final String PATH_REPAIR_SENDER_FAIL = PATH_REPAIR_SENDER + ".fail";
@@ -106,13 +101,18 @@ public class Command implements CommandExecutor {
      */
     public static final String PATH_REPAIR_TARGET = PATH_MAIN + ".repair.target";
 
+    /**
+     * Error message when an object was not found in the config.
+     */
+    public static final String MESSAGE_OBJECT_NOT_FOUND = "Invalid configuration: object at path %s not found! Please reset your config.yml.";
+
     //The command functions
     private final Map<String, Function> functions = new HashMap<>();
     //Target parameters describing all-player target
     private Collection<String> allTarget;
 
     //The main class
-    private RepairItem plugin;
+    private final RepairItem plugin;
 
     /**
      * Initializes the command with the given main class.
@@ -123,7 +123,7 @@ public class Command implements CommandExecutor {
         //Set the plugin
         this.plugin = plugin;
         //Register the command
-        Bukkit.getPluginCommand("repair").setExecutor(this);
+        Objects.requireNonNull(Bukkit.getPluginCommand("repair")).setExecutor(this);
     }
 
     /**
@@ -134,7 +134,7 @@ public class Command implements CommandExecutor {
         functions.clear();
 
         //The function configuration section
-        ConfigurationSection section = plugin.getConfiguration().getConfigurationSection("command.function");
+        ConfigurationSection section = Objects.requireNonNull(plugin.getConfiguration().getConfigurationSection("command.function"));
         //Function (reused)
         Function function;
         //Loop through all keys
@@ -159,7 +159,7 @@ public class Command implements CommandExecutor {
         //If insufficient argument array length
         if (args.length < 1 || args.length > 2) {
             //Invalid format
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_MAIN + ".invalid-format")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_MAIN + ".invalid-format"))));
             return true;
         }
 
@@ -169,7 +169,7 @@ public class Command implements CommandExecutor {
         //If not found
         if (function == null) {
             //Invalid format
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_MAIN + ".invalid-format")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_MAIN + ".invalid-format"))));
             return true;
         }
 
@@ -182,7 +182,7 @@ public class Command implements CommandExecutor {
             //If invalid array length
             if (args.length != 1) {
                 //Invalid format
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_MAIN + ".invalid-format")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_MAIN + ".invalid-format"))));
                 return true;
             }
 
@@ -196,7 +196,7 @@ public class Command implements CommandExecutor {
                 this.reload();
 
                 //Send the message
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_MAIN + ".reload")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_MAIN + ".reload"))));
             } else {
                 //Send the help page
                 for (String line : config.getStringList(PATH_MAIN + ".help"))
@@ -219,7 +219,7 @@ public class Command implements CommandExecutor {
             //If not called by a player
             if (playerSender == null) {
                 //Player only
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_REPAIR_SENDER + ".player-only")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_REPAIR_SENDER + ".player-only"))));
                 return true;
             }
 
@@ -236,7 +236,7 @@ public class Command implements CommandExecutor {
                 //Add all players
                 toRepair.addAll(Bukkit.getOnlinePlayers());
                 //Set the placeholder
-                targetPlaceholder = config.getString(PATH_REPAIR_SENDER_TARGET_PLACEHOLDER + ".all");
+                targetPlaceholder = checkNull(config.getString(PATH_REPAIR_SENDER_TARGET_PLACEHOLDER + ".all"));
 
                 //If only one player
                 if (toRepair.size() == 1)
@@ -271,7 +271,7 @@ public class Command implements CommandExecutor {
             //If no players are in the collection (no one is online/the target player is not online)
             if (toRepair.size() == 0) {
                 //No players found
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_REPAIR_SENDER + ".player-not-found")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_REPAIR_SENDER + ".player-not-found"))));
                 return true;
             }
 
@@ -303,7 +303,7 @@ public class Command implements CommandExecutor {
             //If more than 1 player was repaired
             if (toRepair.size() > 1)
                 //Send the generalized message
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(PATH_REPAIR_SENDER_FAIL + ".generalized")
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(config.getString(PATH_REPAIR_SENDER_FAIL + ".generalized"))
                         .replace("{target}", targetPlaceholder).replace("{repaired}", "" + repaired)));
             else
                 //Send the detailed message
@@ -343,10 +343,21 @@ public class Command implements CommandExecutor {
         //Does not have any of permissions
         if (!hasPermission)
             //Send no permission message
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfiguration().getString(PATH_MAIN + ".no-permission")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', checkNull(plugin.getConfiguration().getString(PATH_MAIN + ".no-permission"))));
 
         //Return if has permission
         return hasPermission;
+    }
+
+    /**
+     * Checks whether the given object is <code>null</code>. If yes, throws {@link NullPointerException}.
+     * @param object the object
+     * @param <T> the type of the object
+     * @return the object
+     */
+    private <T> T checkNull(T object) {
+        //Require non-null
+        return Objects.requireNonNull(object, MESSAGE_OBJECT_NOT_FOUND);
     }
 
     /**
@@ -361,7 +372,7 @@ public class Command implements CommandExecutor {
      * @param target    the target parameter (if used and sending message to the sender), otherwise <code>null</code>
      */
     private void sendMessage(CommandSender recipient, Configuration config, String basePath, Function function, RepairResult result, String sender, String target) {
-        sendMessage(recipient, config, basePath, function, result.getStatus(), result.getRepaired(), sender, target);
+        sendMessage(recipient, config, basePath, function, result == null ? RepairResult.Status.FAIL_ALREADY_REPAIRED : result.getStatus(), result == null ? 0 : result.getRepaired(), sender, target);
     }
 
     /**
@@ -379,7 +390,7 @@ public class Command implements CommandExecutor {
     private void sendMessage(CommandSender recipient, Configuration config, String basePath, Function function, RepairResult.Status status, int repaired, String sender, String target) {
         //The message
         String message = ChatColor.translateAlternateColorCodes('&',
-                config.getString(basePath + "." + (status == RepairResult.Status.SUCCESS ? "success." + function.getPath() : "fail." + status.getPath())));
+                checkNull(config.getString(basePath + "." + (status == RepairResult.Status.SUCCESS ? "success." + function.getPath() : "fail." + status.getPath()))));
         //If sender specified
         if (sender != null)
             //Replace

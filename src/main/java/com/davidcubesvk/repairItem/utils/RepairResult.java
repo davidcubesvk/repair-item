@@ -25,7 +25,7 @@ public class RepairResult {
         FAIL_OTHER("specific.other");
 
         //The path
-        private String path;
+        private final String path;
 
         /**
          * Initializes the path.
@@ -47,9 +47,9 @@ public class RepairResult {
     }
 
     //Status
-    private Status status;
+    private final Status status;
     //Amount of items repaired
-    private byte repaired;
+    private final int repaired;
 
     /**
      * Initializes the result with the given status and amount of items repaired.
@@ -57,20 +57,20 @@ public class RepairResult {
      * @param status   the status of the operation
      * @param repaired the amount of items repaired
      */
-    RepairResult(Status status, byte repaired) {
+    RepairResult(Status status, int repaired) {
         this.status = status;
         this.repaired = repaired;
     }
 
     /**
-     * Initializes the result with the given status. Calls the {@link #RepairResult(Status, byte)} constructor. If the
+     * Initializes the result with the given status. Calls the {@link #RepairResult(Status, int)} constructor. If the
      * status is {@link Status#SUCCESS}, repaired amount of items is automatically set to <code>1</code> (otherwise
      * <code>0</code>).
      *
      * @param status the status of the operation
      */
     RepairResult(Status status) {
-        this(status, status == Status.SUCCESS ? (byte) 1 : (byte) 0);
+        this(status, status == Status.SUCCESS ? 1 : 0);
     }
 
     /**
@@ -87,7 +87,7 @@ public class RepairResult {
      *
      * @return the amount of items repaired
      */
-    public byte getRepaired() {
+    public int getRepaired() {
         return repaired;
     }
 }

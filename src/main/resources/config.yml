@@ -155,7 +155,7 @@ message:
         #         involved and therefore, repair could have not failed due to the same reason.
         specific:
           # If no item could be repaired (there were no items, all of them were unrepairable, blocked or already repaired):
-          no-repairable-item: "&7[&aRepairItem&7] The item is not repairable. It may be blocked or already repaired."
+          no-repairable-item: "&7[&aRepairItem&7] The item is not repairable. It might be blocked or already repaired."
           # If off-hand repair was called while using server versions older than 1.9:
           unsupported: "&7[&aRepairItem&7] Off-hand repair is not supported in versions older than 1.9."
           # If another error occurred:

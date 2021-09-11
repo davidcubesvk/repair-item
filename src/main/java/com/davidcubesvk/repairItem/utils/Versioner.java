@@ -9,7 +9,7 @@ public class Versioner {
 
     //Version constants
     public static final byte V1_7 = 7, V1_8 = 8, V1_9 = 9, V1_10 = 10, V1_11 = 11, V1_12 = 12, V1_13 = 13, V1_14 = 14,
-            V1_15 = 15, V1_16 = 16;
+            V1_15 = 15, V1_16 = 16, V1_17 = 17;
 
     //The current version
     private static final byte version = loadVersion();
@@ -95,9 +95,11 @@ public class Versioner {
             return V1_15;
         else if (serverVersion.contains("1.16"))
             return V1_16;
+        else if (serverVersion.contains("1.17"))
+            return V1_17;
 
         //Not found
-        return -1;
+        throw new RuntimeException("Server version " + serverVersion + " is not supported! If you believe this is an error, please contact me.");
     }
 
 }

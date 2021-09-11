@@ -4,7 +4,6 @@ import com.davidcubesvk.repairItem.RepairItem;
 import com.davidcubesvk.repairItem.api.RepairItemAPI;
 import com.davidcubesvk.repairItem.command.Command;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -12,7 +11,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**

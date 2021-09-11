@@ -7,4 +7,5 @@ api-version: 1.13
 # Commands:
 commands:
   repair:
+    description: Command used to repair items.
     usage: /repair <function>

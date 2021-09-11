@@ -201,21 +201,28 @@ public class BlockedItem {
             //The item meta
             ItemMeta itemMeta = itemStack.getItemMeta();
 
+            //If no meta is present
+            if (itemMeta == null)
+                return false;
+
             //If the name is set and they do not equal
             if (nameSet && (!itemMeta.hasDisplayName() || !name.equals(itemMeta.getDisplayName())))
                 return false;
-                //If the lore is set and they do not equal
-            else if (loreSet && (!itemMeta.hasLore() || !lore.equals(itemMeta.getLore())))
+
+            //If the lore is set and they do not equal
+            if (loreSet && (!itemMeta.hasLore() || !lore.equals(itemMeta.getLore())))
                 return false;
-                //If the enchantments are set and they do not equal
-            else if (enchantmentsSet && (!itemMeta.hasEnchants() || !enchantments.equals(itemMeta.getEnchants())))
+
+            //If the enchantments are set and they do not equal
+            if (enchantmentsSet && (!itemMeta.hasEnchants() || !enchantments.equals(itemMeta.getEnchants())))
                 return false;
-                //If the flags are set and they do not equal
-            else if (flagsSet && !flags.equals(itemMeta.getItemFlags()))
+
+            //If the flags are set and they do not equal
+            if (flagsSet && !flags.equals(itemMeta.getItemFlags()))
                 return false;
-                //If the unbreakable is set and they do not equal
-            else if (unbreakableSet && unbreakable != itemMeta.isUnbreakable())
-                return false;
+
+            //If the unbreakable is set and they do not equal
+            return !unbreakableSet || unbreakable == itemMeta.isUnbreakable();
         }
 
         //Block the item
