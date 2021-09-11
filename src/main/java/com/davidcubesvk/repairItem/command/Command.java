@@ -320,22 +320,27 @@ public class Command implements CommandExecutor {
      * @return if the sender has any (specified or parent) permission
      */
     public boolean hasPermission(CommandSender sender, String permission) {
-        //If has the permission
+        //Boolean to be returned
         boolean hasPermission = false;
 
-        //Check all existing permissions (a.b.c > a.b.* > a.*)
-        while (permission.contains(".")) {
+        //Check all permissions, also shorter (a.b.c > a.b.* > a.*)
+        while (permission.contains(".") && permission.charAt(permission.indexOf('.') + 1) != '*') {
             //Check the permission
             hasPermission = sender.hasPermission(permission);
 
-            //If has, break
+            //If has permission, do not continue
             if (hasPermission) break;
 
-            //Shorten permission check another
-            permission = permission.substring(0, permission.lastIndexOf(".")) + ".*";
+            //Shorten the permission
+            if (permission.endsWith(".*"))
+                //Cut the last sub-permission with .* at the end
+                permission = permission.substring(permission.substring(0, permission.length() - 2).lastIndexOf('.')) + ".*";
+            else
+                //Cut the last sub-permission
+                permission = permission.substring(0, permission.lastIndexOf('.'));
         }
 
-        //Send message if does not have any permission
+        //Does not have any of permissions
         if (!hasPermission)
             //Send no permission message
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfiguration().getString(PATH_MAIN + ".no-permission")));
