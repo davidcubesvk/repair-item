@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.davidcubesvk</groupId>
-  <artifactId>RepairItem</artifactId>
-  <version>1.6</version>
+  <groupId>dev.dejvokep</groupId>
+  <artifactId>repair-item</artifactId>
+  <name>RepairItem</name>
+  <version>1.7</version>
+  <description>An easy-to-use and powerful solution for repairing broken tool.</description>
   <build>
     <plugins>
       <plugin>
@@ -29,9 +31,37 @@
           <relocations>
             <relocation>
               <pattern>org.bstats</pattern>
-              <shadedPattern>com.davidcubesvk.securedNetwork.proxy.util.metrics</shadedPattern>
+              <shadedPattern>dev.dejvokep.repairitem.metrics</shadedPattern>
             </relocation>
           </relocations>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>4.1</version>
+        <executions>
+          <execution>
+            <id>check-headers</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>format</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <properties>
+            <owner>dejvokep</owner>
+            <email>admin@dejvokep.dev</email>
+          </properties>
+          <header>${project.basedir}/LICENSE-header.txt</header>
+          <excludes>
+            <exclude>**/README</exclude>
+          </excludes>
+          <includes>
+            <include>**/*.java</include>
+            <include>**/*.xml</include>
+          </includes>
         </configuration>
       </plugin>
     </plugins>
@@ -50,7 +80,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.3-R0.1-SNAPSHOT</version>
+      <version>1.18-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

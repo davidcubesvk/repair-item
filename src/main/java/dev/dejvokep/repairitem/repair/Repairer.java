@@ -1,10 +1,26 @@
-package com.davidcubesvk.repairItem.utils;
+/*
+ * Copyright 2022 https://dejvokep.dev/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.dejvokep.repairitem.repair;
 
-import com.davidcubesvk.repairItem.RepairItem;
-import com.davidcubesvk.repairItem.api.RepairItemAPI;
-import com.davidcubesvk.repairItem.command.Command;
+import dev.dejvokep.repairitem.RepairItem;
+import dev.dejvokep.repairitem.command.Command;
+import dev.dejvokep.repairitem.utils.BlockedItem;
+import dev.dejvokep.repairitem.utils.IntRange;
+import dev.dejvokep.repairitem.utils.Versioner;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -12,7 +28,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
@@ -75,9 +94,6 @@ public class Repairer {
             damageableClass = null;
             setDurabilityMethod = getDurabilityMethod = null;
         }
-
-        //Set to the API
-        RepairItemAPI.setRepairer(this);
     }
 
     /**
@@ -99,8 +115,8 @@ public class Repairer {
 
     /**
      * Repairs by the given content. If the specified content does not represent a content (e.g.
-     * {@link com.davidcubesvk.repairItem.command.Command.Function#HELP},
-     * {@link com.davidcubesvk.repairItem.command.Command.Function#RELOAD} or <code>null</code>, the method returns
+     * {@link Command.Function#HELP},
+     * {@link Command.Function#RELOAD} or <code>null</code>, the method returns
      * <code>null</code>.
      *
      * @param player  the player to run the repair for

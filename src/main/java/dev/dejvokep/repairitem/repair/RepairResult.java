@@ -1,4 +1,19 @@
-package com.davidcubesvk.repairItem.utils;
+/*
+ * Copyright 2022 https://dejvokep.dev/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.dejvokep.repairitem.repair;
 
 /**
  * A result of a repair operation.
@@ -7,25 +22,43 @@ public class RepairResult {
 
     /**
      * Status of the operation.
-     * <ul>
-     *     <li><code>SUCCESS</code>: succeeded (at least one item was repaired)</li>
-     *     <li><code>FAIL_GENERALIZED</code>: failed because of an error (generalized message)</li>
-     *     <li><code>FAIL_NO_ITEM</code>: failed because no item was found</li>
-     *     <li><code>FAIL_UNREPAIRABLE</code>: failed because no repairable item was found</li>
-     *     <li><code>FAIL_BLOCKED</code>: failed because all items are blocked</li>
-     *     <li><code>FAIL_ALREADY_REPAIRED</code>: failed because all items are already repaired</li>
-     *     <li><code>FAIL_UNSUPPORTED</code>: failed because the operation is not supported</li>
-     *     <li><code>FAIL_OTHER</code>: failed because of other error</li>
-     * </ul>
      */
     public enum Status {
-        SUCCESS(null), FAIL_GENERALIZED("generalized"), FAIL_NO_ITEM("specific.no-repairable-item"),
-        FAIL_UNREPAIRABLE("specific.no-repairable-item"), FAIL_BLOCKED("specific.no-repairable-item"),
-        FAIL_ALREADY_REPAIRED("specific.no-repairable-item"), FAIL_UNSUPPORTED("specific.unsupported"),
+        /**
+         * Succeeded (at least one item was repaired).
+         */
+        SUCCESS(null),
+        /**
+         * Failed because of an error (generalized message).
+         */
+        FAIL_GENERALIZED("generalized"),
+        /**
+         * Failed because no item was found.
+         */
+        FAIL_NO_ITEM("specific.no-repairable-item"),
+        /**
+         * Failed because no repairable item was found.
+         */
+        FAIL_UNREPAIRABLE("specific.no-repairable-item"),
+        /**
+         * Failed because all items are blocked.
+         */
+        FAIL_BLOCKED("specific.no-repairable-item"),
+        /**
+         * Failed because all items are already repaired.
+         */
+        FAIL_ALREADY_REPAIRED("specific.no-repairable-item"),
+        /**
+         * Failed because the operation is not supported.
+         */
+        FAIL_UNSUPPORTED("specific.unsupported"),
+        /**
+         * failed because of other error.
+         */
         FAIL_OTHER("specific.other");
 
         //The path
-        private String path;
+        private final String path;
 
         /**
          * Initializes the path.
@@ -47,9 +80,9 @@ public class RepairResult {
     }
 
     //Status
-    private Status status;
+    private final Status status;
     //Amount of items repaired
-    private byte repaired;
+    private final byte repaired;
 
     /**
      * Initializes the result with the given status and amount of items repaired.
