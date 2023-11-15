@@ -55,7 +55,7 @@ command:
     off-hand:
       - "off-hand"
       - "offhand"
-  # Target argument ("/repair <function> <target>"):
+  # Target argument ("/repair <function> [target]"):
   target:
     # Arguments which can be used to refer to all online players (function will apply to all players):
     all:
