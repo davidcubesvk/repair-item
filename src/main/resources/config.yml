@@ -1,31 +1,28 @@
-# ┌------┐                         ┌--┐         ┌--┐   ┌--┐
-# |  ┌┐  |                         └--┘         |  |   |  |
-# |  └┘  | ┌-----┐ ┌-----┐ ┌-----┐ ┌--┐ ┌-----┐ |  | ┌-┘  └-┐ ┌-----┐ ┌-------┐
-# |    ┌-┘ |  -  | |  -  | |  -  | |  | |  ┌--┘ |  | └-┐  ┌-┘ |  -  | | ┌┐ ┌┐ |
-# |     \  | ┌---┘ | ┌---┘ | ┌-┐ | |  | |  |    |  |   |  |   | ┌---┘ | || || |
-# |  ┌┐  \ | └---┐ | |     | | | | |  | |  |    |  |   |  |   | └---┐ | || || |
-# └--┘└--┘ └-----┘ └-┘     └-┘ └-┘ └--┘ └--┘    └--┘   └--┘   └-----┘ └-┘└-┘└-┘
+#
+# ██████╗ ███████╗██████╗  █████╗ ██╗██████╗ ██╗████████╗███████╗███╗   ███╗
+# ██╔══██╗██╔════╝██╔══██╗██╔══██╗██║██╔══██╗██║╚══██╔══╝██╔════╝████╗ ████║
+# ██████╔╝█████╗  ██████╔╝███████║██║██████╔╝██║   ██║   █████╗  ██╔████╔██║
+# ██╔══██╗██╔══╝  ██╔═══╝ ██╔══██║██║██╔══██╗██║   ██║   ██╔══╝  ██║╚██╔╝██║
+# ██║  ██║███████╗██║     ██║  ██║██║██║  ██║██║   ██║   ███████╗██║ ╚═╝ ██║
+# ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
+#
 # Plugin made by dejvokep.
 #
 # ► Need any help?
 # Join the Discord server (https://discord.com/invite/BbhADEy) and we will more than happily help you :)
 #
-# ----------------------------------------------------------------------------------------------------------------------
-#                                                       Command
-# ----------------------------------------------------------------------------------------------------------------------
+# Command:
 command:
-  # Function argument (1st):
-  # - Info: This configuration is used to bind specific command arguments ("/repair ARGUMENT") to functions. For
-  #         example, specifying "inv" in the list for inventory repair will bind the argument to this function. That
-  #         means, if a player uses "/repair inv", the inventory will be repaired.
-  # - Note: Please note that one argument can be assigned to only one function, e.g. if you specify "inv" in inventory
-  #         repair, you can not specify (bind) it to armor repair, too.
+  # Custom function arguments ("/repair <function>"):
+  # - INFO >> This configuration is used to bind custom command arguments ("/repair <argument>") to functions. For
+  #           example, specifying "inv" in the list for inventory repair will cause "/repair inv" to repair one's inventory.
+  # - IMPORTANT >> One argument can only be assigned to one function (you cannot bind one argument to multiple functions).
   function:
     # Arguments assigned to plugin reload:
     reload:
       - "reload"
       - "rl"
-    # Arguments assigned to help page:
+    # Arguments assigned to the help page:
     help:
       - "help"
       - "?"
@@ -54,48 +51,49 @@ command:
       - "main-hand"
       - "mainhand"
     # Arguments assigned to off-hand repair:
-    # - Note: Please note that this function is available only for server versions 1.9 and newer.
+    # - NOTE >> Available only on servers running version 1.9 and newer.
     off-hand:
       - "off-hand"
       - "offhand"
-  # Target argument (2nd argument for repair functions):
+  # Target argument ("/repair <function> <target>"):
   target:
-    # Arguments representing all players:
+    # Arguments which can be used to refer to all online players (function will apply to all players):
     all:
       - "all"
       - "*"
-# ----------------------------------------------------------------------------------------------------------------------
-#                                                     Blocked items
-# - Info: All sections need to have this format:
-#         - attribute: value
-#           [attribute: value]
-#           ...
-#         You can specify type, name, lore, enchantments, flags and unbreakable state for each item.
-#         Only specified properties are compared. If properties of any blocked item are equal to an item, it is
-#         considered blocked. For example, if default configuration all bow items with name "&6Legendary bow", no lore,
-#         no enchantments and no flags, with unbreakable state set to false, will be blocked. Please look at the wiki
-#         for more information.
-# ----------------------------------------------------------------------------------------------------------------------
+#
+# Blocked items:
+# - INFO >> All sections need to have this format:
+#           - attribute: value
+#             [attribute: value]
+#             ...
+#           You can specify type, name, lore, enchantments, flags and unbreakable state for each item. The example below
+#           shows how all these attributes can be specified.
+#           An item is considered blocked if the attributes specified here match the ones of the item. That means
+#           specifying lore as an empty array also requires the item not to have any lore in order to be blocked; if
+#           omitted, lore is not compared.
 blocked-items:
   # A blocked item:
   - type: "BOW"
-    # The item's name:
+    # The name:
     name: "&6Legendary bow"
-    # The item's lore:
+    # The lore (one list element per line):
     lore: []
-    # The list of item's enchantments:
-    # - Info: Each enchantment should be specified as "ENCHANTMENT:LEVEL". For servers running 1.12 and older, use
-    #         https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html or something similar for
-    #         your version. For servers running 1.13 and newer, use the in-game name.
+    # List of enchantments:
+    # - INFO >> Each enchantment should be specified as "ENCHANTMENT:level". For servers running 1.12 and older, use
+    #           constants from this list https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
+    #           (or any other alternative for your specific version). For servers running 1.13 and newer, use the
+    #           in-game name of the enchantment.
     enchantments: []
-    # The list of item's flags:
+    # List of flags (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html):
     flags: []
     # The unbreakable state:
-    # - Info: This states whether the item will not loose durability. This is not the an enchantment.
+    # - INFO >> This states whether the item will not lose durability. Although having similar name, this does not refer
+    #           to the "Unbreakable" enchantment, rather this refers to a state items can have and which can be
+    #           manipulated exclusively by plugins.
     unbreakable: false
-# ----------------------------------------------------------------------------------------------------------------------
-#                                                   Command messages
-# ----------------------------------------------------------------------------------------------------------------------
+#
+# Command messages:
 message:
   # If the sender does not have the permission for the command:
   no-permission: "&7[&aRepairItem&7] You do not have permission to run this command!"
