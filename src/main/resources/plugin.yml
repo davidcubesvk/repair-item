@@ -1,8 +1,9 @@
 # Plugin info:
-name: RepairItem
-version: 1.6
-main: com.davidcubesvk.repairItem.RepairItem
-author: davidcubesvk
+name: ${project.name}
+version: ${project.version}
+main: dev.dejvokep.repairitem.RepairItem
+author: dejvokep
+description: ${project.description}
 api-version: 1.13
 # Commands:
 commands:

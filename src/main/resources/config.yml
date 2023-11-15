@@ -5,12 +5,10 @@
 # |     \  | ┌---┘ | ┌---┘ | ┌-┐ | |  | |  |    |  |   |  |   | ┌---┘ | || || |
 # |  ┌┐  \ | └---┐ | |     | | | | |  | |  |    |  |   |  |   | └---┐ | || || |
 # └--┘└--┘ └-----┘ └-┘     └-┘ └-┘ └--┘ └--┘    └--┘   └--┘   └-----┘ └-┘└-┘└-┘
-# Plugin made by davidcubesvk.
+# Plugin made by dejvokep.
 #
-# ► Don't understand / know how to set up (wanna know how actions work)?
-# All terms and setup process are available on my website. Link is in all of my plugins' descriptions.
 # ► Need any help?
-# Contact me through any of listed methods on my website, I'd like to help!
+# Join the Discord server (https://discord.com/invite/BbhADEy) and we will more than happily help you :)
 #
 # ----------------------------------------------------------------------------------------------------------------------
 #                                                       Command
@@ -86,7 +84,9 @@ blocked-items:
     # The item's lore:
     lore: []
     # The list of item's enchantments:
-    # - Info: Each enchantment should be specified as "ENCHANTMENT:LEVEL".
+    # - Info: Each enchantment should be specified as "ENCHANTMENT:LEVEL". For servers running 1.12 and older, use
+    #         https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html or something similar for
+    #         your version. For servers running 1.13 and newer, use the in-game name.
     enchantments: []
     # The list of item's flags:
     flags: []

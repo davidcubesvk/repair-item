@@ -1,8 +1,23 @@
-package com.davidcubesvk.repairItem.command;
+/*
+ * Copyright 2022 https://dejvokep.dev/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.dejvokep.repairitem.command;
 
-import com.davidcubesvk.repairItem.RepairItem;
-import com.davidcubesvk.repairItem.utils.RepairResult;
-import com.davidcubesvk.repairItem.utils.Repairer;
+import dev.dejvokep.repairitem.RepairItem;
+import dev.dejvokep.repairitem.repair.RepairResult;
+import dev.dejvokep.repairitem.repair.Repairer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -20,27 +35,49 @@ public class Command implements CommandExecutor {
 
     /**
      * All command functions.
-     * <ul>
-     *     <li><code>ALL</code>: repairs everything - e.g. inventory and armor</li>
-     *     <li><code>INVENTORY</code>: repairs the inventory (without the armor) including both hands</li>
-     *     <li><code>ARMOR</code>: repairs the armor</li>
-     *     <li><code>HOT_BAR</code>: repairs the hot-bar including both hands</li>
-     *     <li><code>BOTH_HANDS</code>: repairs both hands (check if the off hand is supported)</li>
-     *     <li><code>MAIN_HAND</code>: repairs the main hand</li>
-     *     <li><code>OFF_HAND</code>: repairs the off hand (check if supported)</li>
-     *     <li><code>RELOAD</code>: reloads the plugin</li>
-     *     <li><code>HELP</code>: shows the help page</li>
-     * </ul>
      */
     public enum Function {
-        ALL("all"), INVENTORY("inventory"), ARMOR("armor"),
-        HOT_BAR("hotBar"), BOTH_HANDS("bothHands"), MAIN_HAND("mainHand"),
-        OFF_HAND("offHand"), RELOAD("reload"), HELP("help");
+        /**
+         * Repairs everything - e.g. inventory and armor.
+         */
+        ALL("all"),
+        /**
+         * Repairs the inventory (without the armor) including both hands.
+         */
+        INVENTORY("inventory"),
+        /**
+         * Repairs the armor.
+         */
+        ARMOR("armor"),
+        /**
+         * Repairs the hot-bar including both hands.
+         */
+        HOT_BAR("hotBar"),
+        /**
+         * Repairs both hands (check if the off hand is supported).
+         */
+        BOTH_HANDS("bothHands"),
+        /**
+         * Repairs the main hand.
+         */
+        MAIN_HAND("mainHand"),
+        /**
+         * Repairs the off hand (check if supported).
+         */
+        OFF_HAND("offHand"),
+        /**
+         * Reloads the plugin.
+         */
+        RELOAD("reload"),
+        /**
+         * Shows the help page.
+         */
+        HELP("help");
 
         //The path
-        private String path;
+        private final String path;
         //The permission suffix
-        private String permissionSuffix;
+        private final String permissionSuffix;
 
         /**
          * Initializes the path and permission.

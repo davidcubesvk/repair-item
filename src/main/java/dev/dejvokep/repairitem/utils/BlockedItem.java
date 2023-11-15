@@ -1,4 +1,19 @@
-package com.davidcubesvk.repairItem.utils;
+/*
+ * Copyright 2022 https://dejvokep.dev/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.dejvokep.repairitem.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -49,12 +64,14 @@ public class BlockedItem {
 
     /**
      * The method used to get enchantment by keys.
+     *
      * @see #getGetEnchantmentByKeyMethod()
      */
     public static final Method getEnchantmentByKeyMethod = getGetEnchantmentByKeyMethod();
 
     /**
      * The method used to get the game's namespace.
+     *
      * @see #getGameNamespaceMethod()
      */
     public static final Method gameNamespaceMethod = getGameNamespaceMethod();
@@ -86,7 +103,7 @@ public class BlockedItem {
      */
     public BlockedItem(LinkedHashMap<String, Object> section) {
         //If to use the old enchantment naming
-        this.oldEnchantments = Versioner.isOlderThan(Versioner.V1_12);
+        this.oldEnchantments = Versioner.isOlderThan(Versioner.V1_13);
 
         try {
             //If type is set
@@ -159,18 +176,16 @@ public class BlockedItem {
     }
 
     /**
-     * Returns an enchantment by the given name. If using server version older than 1.9,
-     * {@link Enchantment#getByName(String)} is used, otherwise <code>Enchantment#getByKey(NamespacedKey)</code> (not
-     * linked due to class import - compatibility). If any reflection methods failed to load, returns <code>null</code>.
-     * Please note that there is an enchantment naming change between these two versions.
+     * Returns an enchantment by the given name.
+     * <p>
+     * If any reflection methods failed to load, returns <code>null</code>. Please note that there is an enchantment
+     * naming change between these two versions.
      *
      * @param name the name of the enchantment (if using server version older than 1.9, it is automatically upper-cased,
      *             otherwise lower-cased and spaces are replaced by underscores)
      * @return the enchantment by the given name, or <code>null</code>
-     * @throws IllegalAccessException    if an error occurred in reflection method invocation (server versions 1.9 and
-     *                                   newer)
-     * @throws InvocationTargetException if an error occurred in reflection method invocation (server versions 1.9 and
-     *                                   newer)
+     * @throws IllegalAccessException    if an error occurred in reflection method invocation
+     * @throws InvocationTargetException if an error occurred in reflection method invocation
      */
     public Enchantment getEnchantment(String name) throws IllegalAccessException, InvocationTargetException {
         //If the methods are null
@@ -224,14 +239,14 @@ public class BlockedItem {
 
 
     /**
-     * Returns the <code>getByKey(NamespacedKey)</code> (not linked due to class import - compatibility) method from the {@link Enchantment}
-     * class, or <code>null</code> if an error occurred/not supported (server versions 1.11 and older).
+     * Returns the <code>getByKey</code> method from the {@link Enchantment} class, or <code>null</code> if an error
+     * occurred/not supported (server versions 1.12 and older).
      *
-     * @return the <code>getByKey(NamespacedKey)</code> method from the {@link Enchantment} class, or <code>null</code>
+     * @return the method from the {@link Enchantment} class, or <code>null</code>
      */
     private static Method getGetEnchantmentByKeyMethod() {
         //If not supported
-        if (Versioner.isOlderThan(Versioner.V1_12))
+        if (Versioner.isOlderThan(Versioner.V1_13))
             return null;
 
         try {
@@ -246,14 +261,14 @@ public class BlockedItem {
     }
 
     /**
-     * Returns the game's namespace from the <code>NamespacedKey</code> (not linked due to class import - compatibility)
-     * class, or <code>null</code> if an error occurred/not supported (server versions 1.11 and older).
+     * Returns the game's namespace, or <code>null</code> if an error occurred/not supported (server versions 1.12 and
+     * older).
      *
-     * @return the game's namespace from the <code>NamespacedKey</code> class, or <code>null</code>
+     * @return the game's namespace, or <code>null</code>
      */
     private static Method getGameNamespaceMethod() {
         //If not supported
-        if (Versioner.isOlderThan(Versioner.V1_12))
+        if (Versioner.isOlderThan(Versioner.V1_13))
             return null;
 
         try {
