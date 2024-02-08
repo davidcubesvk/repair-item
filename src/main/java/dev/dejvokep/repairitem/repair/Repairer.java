@@ -17,6 +17,7 @@ package dev.dejvokep.repairitem.repair;
 
 import dev.dejvokep.repairitem.RepairItem;
 import dev.dejvokep.repairitem.command.Command;
+import dev.dejvokep.repairitem.command.CommandFunction;
 import dev.dejvokep.repairitem.utils.BlockedItem;
 import dev.dejvokep.repairitem.utils.IntRange;
 import dev.dejvokep.repairitem.utils.Versioner;
@@ -120,12 +121,12 @@ public class Repairer {
      * <code>null</code>.
      *
      * @param player  the player to run the repair for
-     * @param content the content to repair
+     * @param function the content to repair
      * @return the repair result
      */
-    public RepairResult repair(Player player, Command.Function content) {
+    public RepairResult repair(Player player, CommandFunction function) {
         //Switch
-        switch (content) {
+        switch (function) {
             case ALL:
                 return repairAll(player);
             case INVENTORY:
