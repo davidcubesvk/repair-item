@@ -25,25 +25,39 @@
     <groupId>dev.dejvokep</groupId>
     <artifactId>repair-item</artifactId>
     <version>1.7</version>
+    <developers>
+        <developer>
+            <name>dejvokep</name>
+            <email>admin@dejvokep.dev</email>
+            <timezone>CET</timezone>
+            <url>https://dejvokep.dev</url>
+        </developer>
+    </developers>
     <name>RepairItem</name>
     <description>An easy-to-use and powerful solution for repairing broken tool.</description>
     <build>
+        <finalName>${project.name}-${project.version}</finalName>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
                 </configuration>
-                <version>3.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
-
-                <!-- bStats shading -->
+                <version>3.2.4</version>
                 <configuration>
                     <relocations>
                         <relocation>
@@ -118,6 +132,12 @@
             <artifactId>spigot-api</artifactId>
             <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- Cloud -->
+        <dependency>
+            <groupId>cloud.commandframework</groupId>
+            <artifactId>cloud-bukkit</artifactId>
+            <version>1.7.0</version>
         </dependency>
         <!-- bStats -->
         <dependency>
