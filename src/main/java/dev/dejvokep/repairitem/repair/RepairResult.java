@@ -15,6 +15,8 @@
  */
 package dev.dejvokep.repairitem.repair;
 
+import dev.dejvokep.repairitem.command.CommandFunction;
+
 /**
  * A result of a repair operation.
  */
@@ -28,6 +30,9 @@ public class RepairResult {
          * Succeeded (at least one item was repaired).
          */
         SUCCESS(null),
+        ERROR_NOT_REPAIRED(""),
+        ERROR_UNSUPPORTED(""),
+        ERROR_UNKNOWN(""),
         /**
          * Failed because of an error (generalized message).
          */
@@ -74,7 +79,7 @@ public class RepairResult {
          *
          * @return the configuration file message path of the status
          */
-        public String getPath() {
+        public String getPath(CommandFunction function) {
             return path;
         }
     }
