@@ -16,6 +16,7 @@
 package dev.dejvokep.repairitem.command;
 
 import cloud.commandframework.CommandManager;
+import cloud.commandframework.meta.CommandMeta;
 import dev.dejvokep.repairitem.RepairItem;
 import dev.dejvokep.repairitem.repair.RepairResult;
 import dev.dejvokep.repairitem.repair.Repairer;
@@ -84,7 +85,17 @@ public class Command implements CommandExecutor {
         this.plugin = plugin;
 
         for (CommandFunction function : CommandFunction.values()) {
-            manager.command(manager.commandBuilder("repair").literal().build());
+            List<String> literals = plugin.getConfiguration().getStringList("command.function." + function.getPath());
+            if (literals.isEmpty())
+                return;
+
+            manager.command(manager.commandBuilder("repair")
+                    .literal(literals.get(0), literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]))
+                    .permission("repairitem." + function.getPermission() + ".self")
+                    .meta(CommandMeta.DESCRIPTION, function.getDescription())
+                    .handler(context -> {
+
+                    }).build());
         }
     }
 
@@ -347,5 +358,9 @@ public class Command implements CommandExecutor {
             message = message.replace("{target}", target);
         //Send the message
         recipient.sendMessage(message.replace("{repaired}", "" + repaired));
+    }
+
+    public Set<String> getAllTarget() {
+        return allTarget;
     }
 }
