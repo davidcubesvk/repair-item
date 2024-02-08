@@ -15,17 +15,28 @@
  */
 package dev.dejvokep.repairitem;
 
+import cloud.commandframework.CommandManager;
+import cloud.commandframework.bukkit.BukkitCommandManager;
+import cloud.commandframework.execution.CommandExecutionCoordinator;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
+import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
+import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import dev.dejvokep.repairitem.command.Command;
 import dev.dejvokep.repairitem.repair.Repairer;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.logging.Level;
 
 /**
@@ -33,66 +44,48 @@ import java.util.logging.Level;
  */
 public class RepairItem extends JavaPlugin {
 
-    //The configuration file
-    private File configFile;
-    private final YamlConfiguration configuration = new YamlConfiguration();
-
-    //Repairer
+    private YamlDocument config;
     private Repairer repairer;
+    private Command command;
+    private Messenger messenger;
 
     @Override
     public void onEnable() {
-        //Thank you message
-        getLogger().log(Level.INFO, "Thank you for downloading RepairItem!");
+        // Thank you message
+        getLogger().info("Thank you for downloading RepairItem!");
 
-        //Create the folder(s)
-        if (!getDataFolder().exists())
-            getDataFolder().mkdirs();
-        //Create an abstract instance of the file
-        configFile = new File(getDataFolder(), "config.yml");
-        //If the file doesn't exist
-        if (!configFile.exists()) {
-            try (InputStream in = getResource("config.yml")) {
-                Files.copy(in, configFile.toPath());
-            } catch (IOException ex) {
-                //Log
-                getLogger().log(Level.SEVERE, "The configuration file could not be created; please restart the server. If the problem persists, please report it.", ex);
-            }
+        try {
+            // Create the config file
+            config = YamlDocument.create(new File(getDataFolder(), "config.yml"), Objects.requireNonNull(getResource("config.yml")), LoaderSettings.builder().setAutoUpdate(true).build(), UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
+        } catch (IOException ex) {
+            getLogger().log(Level.SEVERE, "Failed to initialize the config file!", ex);
+            return;
         }
-        //Load
-        load();
 
         //Initialize the repairer
         repairer = new Repairer(this);
         //Load
         repairer.reload();
 
-        //Register the command and load
-        new Command(this).reload();
+        // Commands
+        try {
+            CommandManager<CommandSender> commandManager = new BukkitCommandManager<>(this, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
+        } catch (Exception ex) {
+            getLogger().log(Level.SEVERE, "An unexpected error occurred whilst registering commands!", ex);
+        }
 
         //Initialize metrics
         new Metrics(this, 9131);
     }
 
     /**
-     * Loads the configuration file from the disk.
-     */
-    public void load() {
-        try {
-            configuration.load(configFile);
-        } catch (IOException | InvalidConfigurationException ex) {
-            //Log
-            getLogger().log(Level.SEVERE, "The configuration file could not be loaded; please reload the plugin or restart the server. If the problem persists, please report it.", ex);
-        }
-    }
-
-    /**
-     * Returns the configuration file.
+     * Returns the plugin configuration.
      *
-     * @return the configuration file
+     * @return the plugin configuration
      */
-    public YamlConfiguration getConfiguration() {
-        return configuration;
+    @NotNull
+    public YamlDocument getConfiguration() {
+        return config;
     }
 
     /**
@@ -102,5 +95,13 @@ public class RepairItem extends JavaPlugin {
      */
     public Repairer getRepairer() {
         return repairer;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public Messenger getMessenger() {
+        return messenger;
     }
 }
