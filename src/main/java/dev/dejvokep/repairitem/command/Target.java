@@ -27,11 +27,15 @@ public class Target {
         if (players.size() > 1)
             return config.getString(ROUTE_REPLACEMENT_ALL);
 
-        Player one = players.iterator().next();
+        Player one = getOne();
         if (one == sender)
             return config.getString(ROUTE_REPLACEMENT_SELF);
 
         return one.getName();
+    }
+
+    public Player getOne() {
+        return players.iterator().next();
     }
 
     public boolean is(CommandSender sender) {
