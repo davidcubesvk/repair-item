@@ -15,6 +15,7 @@
  */
 package dev.dejvokep.repairitem.command;
 
+import cloud.commandframework.CommandManager;
 import dev.dejvokep.repairitem.RepairItem;
 import dev.dejvokep.repairitem.repair.RepairResult;
 import dev.dejvokep.repairitem.repair.Repairer;
@@ -25,6 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -68,24 +70,22 @@ public class Command implements CommandExecutor {
      */
     public static final String PATH_REPAIR_TARGET = PATH_MAIN + ".repair.target";
 
-    //The command functions
-    private final Map<String, Function> functions = new HashMap<>();
-    //Target parameters describing all-player target
-    private Collection<String> allTarget;
-
-    //The main class
-    private RepairItem plugin;
+    private final Map<String, CommandFunction> functions = new HashMap<>();
+    private final Set<String> allTarget = new HashSet<>();
+    private final RepairItem plugin;
 
     /**
      * Initializes the command with the given main class.
      *
      * @param plugin the main plugin class
      */
-    public Command(RepairItem plugin) {
+    public Command(@NotNull RepairItem plugin, @NotNull CommandManager<CommandSender> manager) {
         //Set the plugin
         this.plugin = plugin;
-        //Register the command
-        Bukkit.getPluginCommand("repair").setExecutor(this);
+
+        for (CommandFunction function : CommandFunction.values()) {
+            manager.command(manager.commandBuilder("repair").literal().build());
+        }
     }
 
     /**
