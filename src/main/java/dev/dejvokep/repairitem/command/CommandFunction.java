@@ -1,11 +1,5 @@
 package dev.dejvokep.repairitem.command;
 
-import cloud.commandframework.context.CommandContext;
-import org.bukkit.command.CommandSender;
-
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
 /**
  * Supported command functions.
  */
@@ -56,10 +50,9 @@ public enum CommandFunction {
      * (<code>-</code>) are replaced by underscores (<code>_</code>). The permission is also lowercase constant name,
      * but with the dashes (<code>-</code>) removed.
      *
-     * @param handler the function handler
      * @param description description of the function
      */
-    CommandFunction(FunctionHandler handler, String description) {
+    CommandFunction(String description) {
         this.path = name().toLowerCase().replace("_", "-");
         this.permission = name().toLowerCase().replace("_", "");
         this.description = description;
