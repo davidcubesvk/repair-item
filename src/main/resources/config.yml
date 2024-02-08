@@ -95,7 +95,7 @@ blocked-items:
 #
 # Command messages:
 # - INFO >> If you do not want certain messages to be sent, leave them as "".
-message:
+messages:
   # If the sender uses an invalid format of a command:
   invalid-format: "&7[&aRepairItem&7] Invalid format. Please use &a/repair help &7to see all commands."
   # If the plugin was reloaded:
@@ -127,7 +127,7 @@ message:
       # Error:
       error:
         # Players only (command was issued from console but did not specify a player [target]):
-        player-only: "&7[&aRepairItem&7] &cIf issuing from the console, you must specify a [target]."
+        players-only: "&7[&aRepairItem&7] &cIf issuing from the console, you must specify a [target]."
         # The [target] player is not online (or no player is online if issuing for all online players):
         # - PLACEHOLDERS >> {target}: the target player's name, or a configured placeholder
         player-offline: "&7[&aRepairItem&7] &cPlayer {target} is offline."
