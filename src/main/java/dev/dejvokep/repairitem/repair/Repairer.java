@@ -114,7 +114,7 @@ public class Repairer {
             case ARMOR:
                 return repairArmor(player);
             case HOTBAR:
-                return repairHotBar(player);
+                return repairHotbar(player);
             case BOTH_HANDS:
                 return repairBothHands(player);
             case MAIN_HAND:
@@ -181,7 +181,7 @@ public class Repairer {
      * @return the result
      */
     @NotNull
-    public RepairResult repairHotBar(@NotNull Player player) {
+    public RepairResult repairHotbar(@NotNull Player player) {
         PlayerInventory inventory = player.getInventory();
 
         // Repair both hands
@@ -201,7 +201,7 @@ public class Repairer {
      */
     @NotNull
     public RepairResult repairBothHands(@NotNull Player player) {
-        return repairHand(player, true).merge(repairHand(player, true));
+        return repairHand(player, true).merge(repairHand(player, false));
     }
 
     /**
