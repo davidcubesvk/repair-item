@@ -74,7 +74,7 @@ public class Messenger {
             return;
 
         // Validate
-        String message = plugin.getConfiguration().getString(messageId);
+        String message = plugin.getConfiguration().getString(MESSAGE_PREFIX + messageId);
         if (message == null || message.isEmpty())
             return;
 
