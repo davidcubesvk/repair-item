@@ -5,7 +5,3 @@ main: dev.dejvokep.repairitem.RepairItem
 author: dejvokep
 description: ${project.description}
 api-version: 1.13
-# Commands:
-commands:
-  repair:
-    usage: /repair <function>
