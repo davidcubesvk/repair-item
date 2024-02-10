@@ -18,35 +18,6 @@ public class Messenger {
      * Message path prefix.
      */
     public static final String MESSAGE_PREFIX = "messages.";
-    /**
-     * "Players only" message path.
-     */
-    public static final String MESSAGE_PLAYERS_ONLY = MESSAGE_PREFIX + "players-only";
-    /**
-     * "Invalid name" message path.
-     */
-    public static final String MESSAGE_INVALID_NAME = MESSAGE_PREFIX + "invalid-name";
-    /**
-     * "Confirmation required" message path.
-     */
-    public static final String MESSAGE_CONFIRM_REQUIRED = MESSAGE_PREFIX + "confirm.required";
-    /**
-     * "Confirmation not pending" message path.
-     */
-    public static final String MESSAGE_CONFIRM_NO_PENDING = MESSAGE_PREFIX + "confirm.not-pending";
-
-    /**
-     * "Data request pending" message path.
-     */
-    public static final String MESSAGE_REQUEST_PENDING = MESSAGE_PREFIX + "data-request.pending";
-    /**
-     * "Data request sent" message path.
-     */
-    public static final String MESSAGE_REQUEST_SENT = MESSAGE_PREFIX + "data-request.sent";
-    /**
-     * "Data request error" message path.
-     */
-    public static final String MESSAGE_REQUEST_ERROR = MESSAGE_PREFIX + "data-request.error";
 
     private final RepairItem plugin;
 
@@ -102,7 +73,7 @@ public class Messenger {
         if (sender instanceof Player && !((Player) sender).isOnline())
             return;
 
-        // Message
+        // Validate
         String message = plugin.getConfiguration().getString(messageId);
         if (message == null || message.isEmpty())
             return;
