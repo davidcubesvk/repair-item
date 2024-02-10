@@ -22,19 +22,15 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
-import dev.dejvokep.repairitem.command.Command;
+import dev.dejvokep.repairitem.command.CommandRegistrar;
 import dev.dejvokep.repairitem.repair.Repairer;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -46,7 +42,7 @@ public class RepairItem extends JavaPlugin {
 
     private YamlDocument config;
     private Repairer repairer;
-    private Command command;
+    private CommandRegistrar commandRegistrar;
     private Messenger messenger;
 
     @Override
@@ -69,7 +65,7 @@ public class RepairItem extends JavaPlugin {
 
         // Commands
         try {
-            CommandManager<CommandSender> commandManager = new BukkitCommandManager<>(this, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
+            commandRegistrar = new CommandRegistrar(this);
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, "An unexpected error occurred whilst registering commands!", ex);
         }
@@ -97,8 +93,8 @@ public class RepairItem extends JavaPlugin {
         return repairer;
     }
 
-    public Command getCommand() {
-        return command;
+    public CommandRegistrar getCommandRegistrar() {
+        return commandRegistrar;
     }
 
     public Messenger getMessenger() {

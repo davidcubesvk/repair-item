@@ -16,7 +16,7 @@
 package dev.dejvokep.repairitem.repair;
 
 import dev.dejvokep.repairitem.RepairItem;
-import dev.dejvokep.repairitem.command.Command;
+import dev.dejvokep.repairitem.command.CommandRegistrar;
 import dev.dejvokep.repairitem.command.CommandFunction;
 import dev.dejvokep.repairitem.utils.BlockedItem;
 import dev.dejvokep.repairitem.utils.IntRange;
@@ -116,8 +116,8 @@ public class Repairer {
 
     /**
      * Repairs by the given content. If the specified content does not represent a content (e.g.
-     * {@link Command.Function#HELP},
-     * {@link Command.Function#RELOAD} or <code>null</code>, the method returns
+     * {@link CommandRegistrar.Function#HELP},
+     * {@link CommandRegistrar.Function#RELOAD} or <code>null</code>, the method returns
      * <code>null</code>.
      *
      * @param player  the player to run the repair for

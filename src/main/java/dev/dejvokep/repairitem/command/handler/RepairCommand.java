@@ -37,7 +37,7 @@ public class RepairCommand implements FunctionHandler {
             return;
         }
 
-        if (plugin.getCommand().getAllTarget().contains(targetName)) {
+        if (plugin.getCommandRegistrar().getAllTarget().contains(targetName)) {
             if (Bukkit.getOnlinePlayers().isEmpty()) {
                 plugin.getMessenger().send(context, "repair.sender.error.player-offline");
                 return;
