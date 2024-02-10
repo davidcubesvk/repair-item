@@ -84,12 +84,14 @@ blocked-items:
     # - INFO >> Each enchantment should be specified as "enchantment:level". For enchantment names, use the constants
     #           provided by the API for your server version (the latest list always available at
     #           https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html).
+    #           For enchantments which do not have levels, specify the level as 1. To match an enchantment at any level,
+    #           specify it as ?.
     enchantments: []
     # List of flags (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html):
     flags: []
     # The unbreakable state:
     # - INFO >> This states whether the item will not lose durability. Although having similar name, this does not refer
-    #           to the "Unbreakable" enchantment, rather this refers to a state items can have and which can be
+    #           to the "Unbreaking" enchantment, rather this refers to a state items can have and which can be
     #           manipulated exclusively by the server software (including plugins).
     unbreakable: false
 #

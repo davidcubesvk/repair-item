@@ -16,6 +16,7 @@
 package dev.dejvokep.repairitem.utils;
 
 import dev.dejvokep.repairitem.RepairItem;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -85,13 +86,13 @@ public class BlockedItem {
         try {
             // Type
             if (section.containsKey(PATH_TYPE)) {
-                type = Material.valueOf((String) section.get(PATH_TYPE));
+                type = Material.valueOf(section.get(PATH_TYPE).toString());
                 typeSet = true;
             }
 
             // Name
             if (section.containsKey(PATH_NAME)) {
-                name = (String) section.get(PATH_NAME);
+                name = ChatColor.translateAlternateColorCodes('&', section.get(PATH_NAME).toString());
                 metaDependent = nameSet = true;
             }
 
@@ -106,7 +107,7 @@ public class BlockedItem {
                 Collection<?> enchantments = (Collection<?>) section.get(PATH_ENCHANTMENTS);
                 for (Object enchantment : enchantments) {
                     String[] data = enchantment.toString().split(":");
-                    this.enchantments.put(getEnchantment(data[0]), Integer.valueOf(data[1]));
+                    this.enchantments.put(getEnchantment(data[0]), data[1].equals("?") ? null : Integer.valueOf(data[1]));
                 }
                 metaDependent = enchantmentsSet = true;
             }
@@ -166,7 +167,7 @@ public class BlockedItem {
             if (loreSet && (!itemMeta.hasLore() || !lore.equals(itemMeta.getLore())))
                 return false;
             // Enchantments
-            if (enchantmentsSet && (!itemMeta.hasEnchants() || !compareMaps(enchantments, itemMeta.getEnchants())))
+            if (enchantmentsSet && (!itemMeta.hasEnchants() || !matchesEnchantments(itemMeta.getEnchants())))
                 return false;
             // Flags
             if (flagsSet && !flags.equals(itemMeta.getItemFlags()))
@@ -181,20 +182,16 @@ public class BlockedItem {
     }
 
     /**
-     * Compares the given maps and returns whether the maps are equal. Two maps are considered equal by this method if
-     * both contain the same <code>key=value</code> pairs.
+     * Compares the given maps and returns whether the given enchantment map matches this item's enchantments.
      *
-     * @param a   the first of the maps to compare
-     * @param b   the second of the maps to compare
-     * @param <K> key type
-     * @param <V> value type
+     * @param enchantments enchantments of the item to compare
      * @return if the maps are equal
      */
-    private <K, V> boolean compareMaps(@NotNull Map<K, V> a, @NotNull Map<K, V> b) {
-        if (a.size() != b.size())
+    private boolean matchesEnchantments(@NotNull Map<Enchantment, Integer> enchantments) {
+        if (this.enchantments.size() != enchantments.size())
             return false;
-        for (K key : a.keySet())
-            if (!b.containsKey(key) || !a.get(key).equals(b.get(key)))
+        for (Enchantment enchantment : this.enchantments.keySet())
+            if (!enchantments.containsKey(enchantment) || (this.enchantments.get(enchantment) != null && !this.enchantments.get(enchantment).equals(enchantments.get(enchantment))))
                 return false;
         return true;
     }
