@@ -80,10 +80,9 @@ blocked-items:
     # The lore (one list element per line):
     lore: []
     # List of enchantments:
-    # - INFO >> Each enchantment should be specified as "ENCHANTMENT:level". For servers running 1.12 and older, use
-    #           constants from this list https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
-    #           (or any other alternative for your specific version). For servers running 1.13 and newer, use the
-    #           in-game name of the enchantment.
+    # - INFO >> Each enchantment should be specified as "enchantment:level". For enchantment names, use the constants
+    #           provided by the API for your server version (the latest list always available at
+    #           https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html).
     enchantments: []
     # List of flags (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html):
     flags: []
