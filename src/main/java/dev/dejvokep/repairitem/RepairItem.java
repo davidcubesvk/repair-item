@@ -91,6 +91,7 @@ public class RepairItem extends JavaPlugin {
      *
      * @return the repairer
      */
+    @NotNull
     public Repairer getRepairer() {
         return repairer;
     }
@@ -100,6 +101,7 @@ public class RepairItem extends JavaPlugin {
      *
      * @return the command registrar
      */
+    @NotNull
     public CommandRegistrar getCommandRegistrar() {
         return commandRegistrar;
     }

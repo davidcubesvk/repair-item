@@ -16,6 +16,8 @@
 package dev.dejvokep.repairitem.repair;
 
 import dev.dejvokep.repairitem.command.CommandFunction;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
@@ -52,7 +54,7 @@ public class RepairResult {
          *
          * @param pathConstructor a constructor for the corresponding function status message path
          */
-        Status(Function<CommandFunction, String> pathConstructor) {
+        Status(@NotNull Function<CommandFunction, String> pathConstructor) {
             this.pathConstructor = pathConstructor;
         }
 
@@ -61,7 +63,8 @@ public class RepairResult {
          *
          * @return the status message path for the given function
          */
-        public String getPath(CommandFunction function) {
+        @NotNull
+        public String getPath(@NotNull CommandFunction function) {
             return pathConstructor.apply(function);
         }
     }
@@ -75,7 +78,7 @@ public class RepairResult {
      * @param status   the status
      * @param repaired the amount of items repaired, must not be negative
      */
-    private RepairResult(Status status, int repaired) {
+    private RepairResult(@Nullable Status status, int repaired) {
         if (repaired < 0)
             throw new IllegalArgumentException("Repaired items count cannot be less than 0!");
 
@@ -100,7 +103,8 @@ public class RepairResult {
      * @param that the result to merge with
      * @return the merged result
      */
-    public RepairResult merge(RepairResult that) {
+    @NotNull
+    public RepairResult merge(@NotNull RepairResult that) {
         if (that.status == null)
             throw new IllegalArgumentException("Cannot merge with an empty result!");
 
@@ -113,6 +117,7 @@ public class RepairResult {
      *
      * @return an empty result
      */
+    @NotNull
     public static RepairResult empty() {
         return new RepairResult(null, 0);
     }
@@ -122,6 +127,7 @@ public class RepairResult {
      *
      * @return the success result
      */
+    @NotNull
     public static RepairResult success() {
         return new RepairResult(Status.SUCCESS, 1);
     }
@@ -132,7 +138,8 @@ public class RepairResult {
      * @param status the status to initialize with
      * @return the error result
      */
-    public static RepairResult error(Status status) {
+    @NotNull
+    public static RepairResult error(@NotNull Status status) {
         return new RepairResult(status, 0);
     }
 
@@ -141,6 +148,7 @@ public class RepairResult {
      *
      * @return the status of the operation
      */
+    @Nullable
     public Status getStatus() {
         return status;
     }

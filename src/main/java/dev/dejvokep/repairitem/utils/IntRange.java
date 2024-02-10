@@ -15,6 +15,8 @@
  */
 package dev.dejvokep.repairitem.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A range of integers defined by min and max boundaries.
  */
@@ -47,6 +49,7 @@ public class IntRange {
      *
      * @return the contents of this range
      */
+    @NotNull
     public int[] getContents() {
         return contents;
     }

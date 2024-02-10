@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -66,7 +67,7 @@ public class Repairer {
      *
      * @param plugin the plugin instance
      */
-    public Repairer(RepairItem plugin) {
+    public Repairer(@NotNull RepairItem plugin) {
         this.plugin = plugin;
 
         // Initialize reflection components
@@ -104,7 +105,8 @@ public class Repairer {
      * @param function function type defining the content to repair
      * @return the result
      */
-    public RepairResult repair(Player player, CommandFunction function) {
+    @NotNull
+    public RepairResult repair(@NotNull Player player, @NotNull CommandFunction function) {
         switch (function) {
             case ALL:
                 return repairAll(player);
@@ -131,7 +133,8 @@ public class Repairer {
      * @param player the player whose items to repair
      * @return the result
      */
-    public RepairResult repairAll(Player player) {
+    @NotNull
+    public RepairResult repairAll(@NotNull Player player) {
         return repairInventory(player).merge(repairArmor(player));
     }
 
@@ -141,7 +144,8 @@ public class Repairer {
      * @param player the player whose items to repair
      * @return the result
      */
-    public RepairResult repairInventory(Player player) {
+    @NotNull
+    public RepairResult repairInventory(@NotNull Player player) {
         PlayerInventory inventory = player.getInventory();
 
         // Repair both hands
@@ -159,7 +163,8 @@ public class Repairer {
      * @param player the player whose items to repair
      * @return the result
      */
-    public RepairResult repairArmor(Player player) {
+    @NotNull
+    public RepairResult repairArmor(@NotNull Player player) {
         ItemStack[] armor = player.getInventory().getArmorContents();
 
         // Repair
@@ -176,7 +181,8 @@ public class Repairer {
      * @param player the player whose items to repair
      * @return the result
      */
-    public RepairResult repairHotBar(Player player) {
+    @NotNull
+    public RepairResult repairHotBar(@NotNull Player player) {
         PlayerInventory inventory = player.getInventory();
 
         // Repair both hands
@@ -194,7 +200,8 @@ public class Repairer {
      * @param player the player whose items to repair
      * @return the result
      */
-    public RepairResult repairBothHands(Player player) {
+    @NotNull
+    public RepairResult repairBothHands(@NotNull Player player) {
         return repairHand(player, true).merge(repairHand(player, true));
     }
 
@@ -205,7 +212,9 @@ public class Repairer {
      * @param main   if to repair item in the main-hand (<code>false</code> for off-hand)
      * @return the result
      */
-    public RepairResult repairHand(Player player, boolean main) {
+    @SuppressWarnings("deprecation")
+    @NotNull
+    public RepairResult repairHand(@NotNull Player player, boolean main) {
         if (main)
             return repair(VersionConstants.OFF_HAND_UNSUPPORTED ? player.getInventory().getItemInHand() : player.getInventory().getItemInMainHand());
 
@@ -221,6 +230,7 @@ public class Repairer {
      * @param itemStack the item to repair
      * @return the result
      */
+    @NotNull
     public RepairResult repair(@Nullable ItemStack itemStack) {
         // Reflection components not initialized
         if (getDurabilityMethod == null || setDurabilityMethod == null)
@@ -269,6 +279,7 @@ public class Repairer {
      * @return the reference of the method for setting the durability of an item
      * @throws NoSuchMethodException if the method could not be found
      */
+    @NotNull
     private Method getSetDurabilityMethod() throws NoSuchMethodException {
         return VersionConstants.LEGACY_DURABILITY ? ItemStack.class.getDeclaredMethod("setDurability", short.class) : damageableClass.getDeclaredMethod("setDamage", int.class);
     }
@@ -280,17 +291,19 @@ public class Repairer {
      * @return the reference of the method for getting the durability of an item
      * @throws NoSuchMethodException if the method could not be found
      */
+    @NotNull
     private Method getGetDurabilityMethod() throws NoSuchMethodException {
         return VersionConstants.LEGACY_DURABILITY ? ItemStack.class.getDeclaredMethod("getDurability") : damageableClass.getDeclaredMethod("getDamage");
     }
 
     /**
-     * Returns the damageable interface reference for item durability management. Returns <code>null</code> if an error
-     * running an unsupported server version (under 1.13).
+     * Returns the damageable interface reference for item durability management. Returns <code>null</code> if running
+     * an unsupported server version (older than 1.13).
      *
      * @return the damageable interface reference, or <code>null</code> if running an unsupported server version
      * @throws ClassNotFoundException if the class could not be found
      */
+    @Nullable
     private Class<?> getDamageableClass() throws ClassNotFoundException {
         return VersionConstants.LEGACY_DURABILITY ? null : Class.forName("org.bukkit.inventory.meta.Damageable");
     }

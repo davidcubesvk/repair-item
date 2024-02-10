@@ -21,9 +21,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -81,7 +81,7 @@ public class BlockedItem {
      * @param plugin  the plugin instance, used only for logging
      * @param section a section map representing containing the properties
      */
-    public BlockedItem(RepairItem plugin, Map<?, ?> section) {
+    public BlockedItem(@NotNull RepairItem plugin, @NotNull Map<?, ?> section) {
         try {
             // Type
             if (section.containsKey(PATH_TYPE)) {
@@ -134,7 +134,7 @@ public class BlockedItem {
      * @return the enchantment by the given name
      * @throws ReflectiveOperationException a reflective operation exception
      */
-    public Enchantment getEnchantment(String name) throws ReflectiveOperationException {
+    public Enchantment getEnchantment(@NotNull String name) throws ReflectiveOperationException {
         Field field = Enchantment.class.getDeclaredField(name.toUpperCase().replace(" ", "_"));
         field.setAccessible(true);
         return (Enchantment) field.get(null);
@@ -147,7 +147,7 @@ public class BlockedItem {
      * @param itemStack the item to compare
      * @return whether the given item should (is) blocked
      */
-    public boolean compare(ItemStack itemStack) {
+    public boolean compare(@NotNull ItemStack itemStack) {
         // Type
         if (typeSet && type != itemStack.getType())
             return false;
@@ -190,7 +190,7 @@ public class BlockedItem {
      * @param <V> value type
      * @return if the maps are equal
      */
-    private <K, V> boolean compareMaps(Map<K, V> a, Map<K, V> b) {
+    private <K, V> boolean compareMaps(@NotNull Map<K, V> a, @NotNull Map<K, V> b) {
         if (a.size() != b.size())
             return false;
         for (K key : a.keySet())
