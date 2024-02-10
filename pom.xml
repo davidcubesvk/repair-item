@@ -34,7 +34,7 @@
         </developer>
     </developers>
     <name>RepairItem</name>
-    <description>An easy-to-use and powerful solution for repairing broken tool.</description>
+    <description>An elegant and fully customizable item repair tool with drag and drop install.</description>
     <build>
         <finalName>${project.name}-${project.version}</finalName>
         <resources>

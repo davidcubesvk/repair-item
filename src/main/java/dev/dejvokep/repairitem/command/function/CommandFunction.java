@@ -35,7 +35,7 @@ public enum CommandFunction {
     /**
      * Repairs the inventory items (without the armor, including both hands).
      */
-    INVENTORY("Repairs inventory items, without the armor.", RepairCommand::new, true),
+    INVENTORY("Repairs inventory items, excluding the armor.", RepairCommand::new, true),
     /**
      * Repairs the armor.
      */

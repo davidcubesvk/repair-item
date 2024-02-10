@@ -115,11 +115,11 @@ messages:
   # Help page:
   help:
     - "&7[&aRepairItem&7] &a&lHelp Page"
-    - "&a/repair all [target] &7- repairs everything (inventory and armor)"
-    - "&a/repair inv [target] &7- repairs the inventory (including both hands if supported)"
-    - "&a/repair armor [target] &7- repairs armor"
-    - "&a/repair hotbar [target] &7- repairs the hot-bar"
-    - "&a/repair hands [target] &7- repairs both hands (off-hand only if supported)"
+    - "&a/repair all [target] &7- repairs all items"
+    - "&a/repair inv [target] &7- repairs inventory items (excluding armor)"
+    - "&a/repair armor [target] &7- repairs the armor"
+    - "&a/repair hotbar [target] &7- repairs hotbar items"
+    - "&a/repair hands [target] &7- repairs items in both hands (off-hand only if supported)"
     - "&a/repair mainhand [target] &7- repairs the main-hand"
     - "&a/repair offhand [target] &7- repairs the off-hand (only if supported)"
     - "&7To issue a repair for another player, use &a[target]&7. To repair for all players, use &a*&7."
