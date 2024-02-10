@@ -16,20 +16,15 @@
 package dev.dejvokep.repairitem.command;
 
 import cloud.commandframework.CommandManager;
+import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.meta.CommandMeta;
 import dev.dejvokep.repairitem.RepairItem;
-import dev.dejvokep.repairitem.repair.RepairResult;
-import dev.dejvokep.repairitem.repair.Repairer;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Command executor for the main plugin command <code>/repair</code>.
@@ -58,13 +53,20 @@ public class Command {
             if (literals.isEmpty())
                 return;
 
-            manager.command(manager.commandBuilder("repair")
-                    .literal(literals.get(0), literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]))
-                    .permission(PERMISSION_BASE + "." + function.getPermission() + ".self")
-                    .meta(CommandMeta.DESCRIPTION, function.getDescription())
-                    .handler(context -> {
+            String[] rest = literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]);
+            FunctionHandler handler = function.initHandler(plugin);
 
-                    }).build());
+            manager.command(manager.commandBuilder("repair")
+                    .literal(literals.get(0), rest)
+                    .permission(String.format("%s.%s.self", PERMISSION_BASE, function.getPermission()))
+                    .meta(CommandMeta.DESCRIPTION, function.getDescription())
+                    .handler(handler::accept).build());
+            manager.command(manager.commandBuilder("repair")
+                    .literal(literals.get(0), rest)
+                    .argument(StringArgument.of("target"))
+                    .permission(String.format("%s.%s.other", PERMISSION_BASE, function.getPermission()))
+                    .meta(CommandMeta.DESCRIPTION, function.getDescription())
+                    .handler(handler::accept).build());
         }
     }
 
