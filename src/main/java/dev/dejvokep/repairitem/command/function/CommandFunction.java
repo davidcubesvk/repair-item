@@ -31,42 +31,43 @@ public enum CommandFunction {
     /**
      * Repairs all (inventory and armor) items.
      */
-    ALL("Repairs all items.", RepairCommand::new),
+    ALL("Repairs all items.", RepairCommand::new, true),
     /**
      * Repairs the inventory items (without the armor, including both hands).
      */
-    INVENTORY("Repairs inventory items, without the armor.", RepairCommand::new),
+    INVENTORY("Repairs inventory items, without the armor.", RepairCommand::new, true),
     /**
      * Repairs the armor.
      */
-    ARMOR("Repairs the armor.", RepairCommand::new),
+    ARMOR("Repairs the armor.", RepairCommand::new, true),
     /**
      * Repairs the hotbar items (including both hands).
      */
-    HOTBAR("Repairs hotbar items.", RepairCommand::new),
+    HOTBAR("Repairs hotbar items.", RepairCommand::new, true),
     /**
      * Repairs both hands.
      */
-    BOTH_HANDS("Repairs items in both hands.", RepairCommand::new),
+    BOTH_HANDS("Repairs items in both hands.", RepairCommand::new, true),
     /**
      * Repairs the main-hand.
      */
-    MAIN_HAND("Repairs the main-hand.", RepairCommand::new),
+    MAIN_HAND("Repairs the main-hand.", RepairCommand::new, true),
     /**
      * Repairs the off-hand.
      */
-    OFF_HAND("Repairs the off-hand.", RepairCommand::new),
+    OFF_HAND("Repairs the off-hand.", RepairCommand::new, true),
     /**
      * Reloads the plugin.
      */
-    RELOAD("Reloads the plugin.", (plugin, function) -> new ReloadCommand(plugin)),
+    RELOAD("Reloads the plugin.", (plugin, function) -> new ReloadCommand(plugin), false),
     /**
      * Shows the help page.
      */
-    HELP("Displays the help page.", (plugin, function) -> new HelpCommand(plugin));
+    HELP("Displays the help page.", (plugin, function) -> new HelpCommand(plugin), false);
 
     private final String path, permission, description;
     private final BiFunction<RepairItem, CommandFunction, FunctionHandler> handlerInitializer;
+    private final boolean hasTarget;
 
     /**
      * Initializes the command function.
@@ -77,16 +78,19 @@ public enum CommandFunction {
      *
      * @param description        description of the function
      * @param handlerInitializer function handler initializer
+     * @param hasTarget          if this function also has a command variant with the <code>[target]</code> argument
      */
-    CommandFunction(@NotNull String description, @NotNull BiFunction<RepairItem, CommandFunction, FunctionHandler> handlerInitializer) {
+    CommandFunction(@NotNull String description, @NotNull BiFunction<RepairItem, CommandFunction, FunctionHandler> handlerInitializer, boolean hasTarget) {
         this.path = name().toLowerCase().replace("_", "-");
         this.permission = name().toLowerCase().replace("_", "");
         this.description = description;
         this.handlerInitializer = handlerInitializer;
+        this.hasTarget = hasTarget;
     }
 
     /**
      * Initializes a handler for this function.
+     *
      * @param plugin the plugin instance
      * @return the created handler
      */
@@ -123,5 +127,14 @@ public enum CommandFunction {
     @NotNull
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Returns if this function also has a command variant with the <code>[target]</code> argument.
+     *
+     * @return if this function also has a command variant with the <code>[target]</code> argument
+     */
+    public boolean hasTarget() {
+        return hasTarget;
     }
 }
