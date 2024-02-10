@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * Command executor for the main plugin command <code>/repair</code>.
  */
-public class Command implements CommandExecutor {
+public class Command {
 
     /**
      * The base permission node.
@@ -60,7 +60,7 @@ public class Command implements CommandExecutor {
 
             manager.command(manager.commandBuilder("repair")
                     .literal(literals.get(0), literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]))
-                    .permission("repairitem." + function.getPermission() + ".self")
+                    .permission(PERMISSION_BASE + "." + function.getPermission() + ".self")
                     .meta(CommandMeta.DESCRIPTION, function.getDescription())
                     .handler(context -> {
 
