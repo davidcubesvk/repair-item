@@ -11,6 +11,9 @@
 # ► Need any help?
 # Join the Discord server (https://discord.com/invite/BbhADEy) and we will more than happily help you :)
 #
+# Config version:
+# - IMPORTANT >> Do NOT change unless you know what you are doing. Changing this might break the plugin.
+config-version: 1
 # Command:
 command:
   # Custom function arguments ("/repair <function>"):
