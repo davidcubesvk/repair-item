@@ -4,6 +4,7 @@ import cloud.commandframework.context.CommandContext;
 import org.bukkit.command.CommandSender;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-public interface FunctionHandler extends BiConsumer<CommandContext<CommandSender>, CommandFunction> {
+public interface FunctionHandler extends Consumer<CommandContext<CommandSender>> {
 }
