@@ -16,38 +16,30 @@
 package dev.dejvokep.repairitem.utils;
 
 /**
- * A range of integers specified by min and max integers.
+ * A range of integers defined by min and max boundaries.
  */
 public class IntRange {
 
-    //The contents
     private final int[] contents;
 
     /**
-     * Initializes the range by the given min (inclusive) and max (exclusive) integer. Max integer has to be greater
-     * than the min integer, or the range will not initialize it's contents.
+     * Initializes the range by the given min (inclusive) and max (exclusive) integer.
+     * <p>
+     * The range cannot be invalid - it has to contain at least one element. If <code>min &gt;= max</code>, an
+     * {@link IllegalArgumentException} will be thrown.
      *
      * @param min the min integer (inclusive)
      * @param max the max integer (exclusive)
      */
     public IntRange(int min, int max) {
-        //If max is not greater than min
-        if (min >= max) {
-            //Initialize
-            contents = null;
-            //Return
-            return;
-        }
+        // Validate boundaries
+        if (min >= max)
+            throw new IllegalArgumentException("Min must be less than the max range boundary!");
 
-        //Create the array
+        // Initialize the array
         contents = new int[max - min];
-        //Go through all indexes
-        for (int index = 0; min < max; index++) {
-            //Set the content integer
-            contents[index] = min;
-            //Increase the min (content) integer
-            min++;
-        }
+        for (int i = 0; min < max; i++)
+            contents[i] = min++;
     }
 
     /**
