@@ -101,7 +101,7 @@ public class BlockedItem {
      *
      * @param section a map representing the configuration section containing the properties (directly)
      */
-    public BlockedItem(LinkedHashMap<String, Object> section) {
+    public BlockedItem(Map<?, ?> section) {
         //If to use the old enchantment naming
         this.oldEnchantments = Versioner.isOlderThan(Versioner.V1_13);
 
