@@ -4,7 +4,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.route.Route;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A representation for a command sender.
@@ -23,7 +23,7 @@ public class Sender {
      *
      * @param sender the command sender
      */
-    private Sender(CommandSender sender) {
+    private Sender(@NotNull CommandSender sender) {
         this.sender = sender;
     }
 
@@ -33,7 +33,7 @@ public class Sender {
      * @param config the config
      * @return the placeholder replacement
      */
-    public String getReplacement(YamlDocument config) {
+    public String getReplacement(@NotNull YamlDocument config) {
         return sender instanceof ConsoleCommandSender ? config.getString(ROUTE_REPLACEMENT_CONSOLE) : sender.getName();
     }
 
@@ -42,6 +42,7 @@ public class Sender {
      *
      * @return the sender instance
      */
+    @NotNull
     public CommandSender get() {
         return sender;
     }
@@ -52,7 +53,7 @@ public class Sender {
      * @param sender the sender
      * @return the sender
      */
-    public static Sender of(CommandSender sender) {
+    public static Sender of(@NotNull CommandSender sender) {
         return new Sender(sender);
     }
 

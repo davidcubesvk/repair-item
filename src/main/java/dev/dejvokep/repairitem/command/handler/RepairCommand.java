@@ -76,7 +76,7 @@ public class RepairCommand implements FunctionHandler {
      * @param sender   the sender
      * @param target   the target
      */
-    private void run(CommandFunction function, Sender sender, Target target) {
+    private void run(@NotNull CommandFunction function, @NotNull Sender sender, @NotNull Target target) {
         String targetReplacement = target.getReplacement(sender.get(), plugin.getConfiguration());
         String senderReplacement = sender.getReplacement(plugin.getConfiguration());
 

@@ -94,6 +94,7 @@ public class CommandRegistrar {
      *
      * @return the set of placeholders representing all online players
      */
+    @NotNull
     public Set<String> getAllTarget() {
         return allTarget;
     }

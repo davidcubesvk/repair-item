@@ -4,6 +4,7 @@ import dev.dejvokep.repairitem.RepairItem;
 import dev.dejvokep.repairitem.command.handler.HelpCommand;
 import dev.dejvokep.repairitem.command.handler.ReloadCommand;
 import dev.dejvokep.repairitem.command.handler.RepairCommand;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiFunction;
 
@@ -62,7 +63,7 @@ public enum CommandFunction {
      * @param description        description of the function
      * @param handlerInitializer function handler initializer
      */
-    CommandFunction(String description, BiFunction<RepairItem, CommandFunction, FunctionHandler> handlerInitializer) {
+    CommandFunction(@NotNull String description, @NotNull BiFunction<RepairItem, CommandFunction, FunctionHandler> handlerInitializer) {
         this.path = name().toLowerCase().replace("_", "-");
         this.permission = name().toLowerCase().replace("_", "");
         this.description = description;
@@ -74,6 +75,7 @@ public enum CommandFunction {
      * @param plugin the plugin instance
      * @return the created handler
      */
+    @NotNull
     public FunctionHandler initHandler(RepairItem plugin) {
         return handlerInitializer.apply(plugin, this);
     }
@@ -83,6 +85,7 @@ public enum CommandFunction {
      *
      * @return the configuration path of the function
      */
+    @NotNull
     public String getPath() {
         return path;
     }
@@ -92,6 +95,7 @@ public enum CommandFunction {
      *
      * @return the permission suffix of the function
      */
+    @NotNull
     public String getPermission() {
         return permission;
     }
@@ -101,6 +105,7 @@ public enum CommandFunction {
      *
      * @return the description of the function
      */
+    @NotNull
     public String getDescription() {
         return description;
     }
