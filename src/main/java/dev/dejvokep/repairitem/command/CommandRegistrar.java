@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * Command executor for the main plugin command <code>/repair</code>.
+ * Command registrar for the <code>/repair</code> command.
  */
 public class CommandRegistrar {
 
@@ -43,32 +43,36 @@ public class CommandRegistrar {
     private final RepairItem plugin;
 
     /**
-     * Initializes the command with the given main class.
+     * Registers all commands to the given plugin instance.
      *
-     * @param plugin the main plugin class
+     * @param plugin the plugin instance
      * @throws Exception thrown if failed to construct the command manager
      */
     public CommandRegistrar(@NotNull RepairItem plugin) throws Exception {
-        //Set the plugin
         this.plugin = plugin;
 
+        // Create the manager
         CommandManager<CommandSender> manager = new BukkitCommandManager<>(plugin, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
 
         for (CommandFunction function : CommandFunction.values()) {
             List<String> literals = plugin.getConfiguration().getStringList("command.function." + function.getPath());
+
+            // No literal to assign to the function
             if (literals.isEmpty())
                 return;
 
-            String[] rest = literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]);
+            // Aliases and handler
+            String[] aliases = literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]);
             FunctionHandler handler = function.initHandler(plugin);
 
+            // Register for self and targeted repair
             manager.command(manager.commandBuilder("repair")
-                    .literal(literals.get(0), rest)
+                    .literal(literals.get(0), aliases)
                     .permission(String.format("%s.%s.self", PERMISSION_BASE, function.getPermission()))
                     .meta(CommandMeta.DESCRIPTION, function.getDescription())
                     .handler(handler::accept).build());
             manager.command(manager.commandBuilder("repair")
-                    .literal(literals.get(0), rest)
+                    .literal(literals.get(0), aliases)
                     .argument(StringArgument.of("target"))
                     .permission(String.format("%s.%s.other", PERMISSION_BASE, function.getPermission()))
                     .meta(CommandMeta.DESCRIPTION, function.getDescription())
@@ -77,13 +81,19 @@ public class CommandRegistrar {
     }
 
     /**
-     * Reloads the function bindings.
+     * Reloads the registrar.
      */
     public void reload() {
         allTarget.clear();
         allTarget.addAll(plugin.getConfiguration().getStringList("command.target.all"));
     }
 
+    /**
+     * Returns the set of strings which can be specified as the <code>target</code> command argument to represent all
+     * online players.
+     *
+     * @return the set of placeholders representing all online players
+     */
     public Set<String> getAllTarget() {
         return allTarget;
     }

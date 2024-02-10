@@ -6,12 +6,12 @@ import dev.dejvokep.repairitem.command.handler.ReloadCommand;
 import dev.dejvokep.repairitem.command.handler.RepairCommand;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Supported command functions.
  */
 public enum CommandFunction {
+
     /**
      * Repairs all (inventory and armor) items.
      */

@@ -11,10 +11,18 @@ import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
+/**
+ * Help function command handler.
+ */
 public class HelpCommand implements FunctionHandler {
 
     private final RepairItem plugin;
 
+    /**
+     * Initializes the command handler.
+     *
+     * @param plugin the plugin instance
+     */
     public HelpCommand(@NotNull RepairItem plugin) {
         this.plugin = plugin;
     }

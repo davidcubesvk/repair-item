@@ -144,13 +144,13 @@ public class RepairResult {
     }
 
     /**
-     * Returns the status of the operation.
+     * Returns the status of the operation, or {@link Status#SUCCESS} if this result is empty.
      *
-     * @return the status of the operation
+     * @return the status of the operation, or {@link Status#SUCCESS} if this result is empty
      */
-    @Nullable
+    @NotNull
     public Status getStatus() {
-        return status;
+        return status == null ? Status.SUCCESS : status;
     }
 
     /**
