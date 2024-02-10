@@ -15,7 +15,8 @@
 command:
   # Custom function arguments ("/repair <function>"):
   # - INFO >> This configuration is used to bind custom command arguments ("/repair <argument>") to functions. For
-  #           example, specifying "inv" in the list for inventory repair will cause "/repair inv" to repair one's inventory.
+  #           example, specifying "inv" in the list for inventory repair will cause "/repair inv" to repair one's
+  #           inventory. Leave as empty list ([]) to disable the function.
   # - IMPORTANT >> One argument can only be assigned to one function (you cannot bind one argument to multiple functions).
   function:
     # Arguments assigned to plugin reload:
@@ -100,7 +101,8 @@ blocked-items:
 metrics: true
 #
 # Command messages:
-# - INFO >> If you do not want certain messages to be sent, leave them as "".
+# - INFO >> If you do not want certain messages to be sent, leave them as "". To send a multiline message, define the
+#           lines as a list, as shown below at the help page.
 messages:
   # If the sender uses an invalid format of a command:
   invalid-format: "&7[&aRepairItem&7] Invalid format. Please use &a/repair help &7to see all commands."
