@@ -20,7 +20,7 @@ import dev.dejvokep.repairitem.command.CommandFunction;
 import java.util.function.Function;
 
 /**
- * A class representing the result of a repair operation.
+ * Result of a repair operation representation.
  */
 public class RepairResult {
 
