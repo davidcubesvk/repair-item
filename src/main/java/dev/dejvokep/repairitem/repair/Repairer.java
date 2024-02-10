@@ -91,7 +91,7 @@ public class Repairer {
         // Reset the set
         plugin.getConfiguration().getOptionalMapList("blocked-items").ifPresent(sections -> {
             for (Map<?, ?> map : sections)
-                blockedItems.add(new BlockedItem(map));
+                blockedItems.add(new BlockedItem(plugin, map));
         });
     }
 
