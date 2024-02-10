@@ -2,7 +2,6 @@ package dev.dejvokep.repairitem.command.handler;
 
 import cloud.commandframework.context.CommandContext;
 import dev.dejvokep.repairitem.RepairItem;
-import dev.dejvokep.repairitem.command.CommandFunction;
 import dev.dejvokep.repairitem.command.FunctionHandler;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +24,7 @@ public class ReloadCommand implements FunctionHandler {
         } catch (IOException ex) {
             plugin.getLogger().log(Level.SEVERE, "An error occurred whilst reloading plugin configuration!", ex);
         }
+        plugin.getCommandRegistrar().reload();
         plugin.getRepairer().reload();
         plugin.getMessenger().send(context, "reload");
     }
