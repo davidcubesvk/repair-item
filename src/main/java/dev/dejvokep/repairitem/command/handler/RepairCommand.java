@@ -66,7 +66,7 @@ public class RepairCommand implements FunctionHandler {
         // Issuing for all players
         if (plugin.getCommandRegistrar().getAllTarget().contains(targetName)) {
             if (Bukkit.getOnlinePlayers().isEmpty()) {
-                plugin.getMessenger().send(context, "repair.sender.error.player-offline");
+                plugin.getMessenger().send(context, "repair.sender.error.player-offline", message -> message.replace("{target}", plugin.getConfiguration().getString(Target.ROUTE_REPLACEMENT_ALL)));
                 return;
             }
 
@@ -76,7 +76,7 @@ public class RepairCommand implements FunctionHandler {
         // Issuing for one player
         Player player = Bukkit.getPlayerExact(targetName);
         if (player == null) {
-            plugin.getMessenger().send(context, "repair.sender.error.player-offline");
+            plugin.getMessenger().send(context, "repair.sender.error.player-offline", message -> message.replace("{target}", targetName));
             return;
         }
 
