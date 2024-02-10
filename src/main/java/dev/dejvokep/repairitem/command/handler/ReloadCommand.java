@@ -19,7 +19,7 @@ public class ReloadCommand implements FunctionHandler {
     }
 
     @Override
-    public void accept(@NotNull CommandContext<CommandSender> context, @NotNull CommandFunction function) {
+    public void accept(@NotNull CommandContext<CommandSender> context) {
         try {
             plugin.getConfiguration().reload();
         } catch (IOException ex) {

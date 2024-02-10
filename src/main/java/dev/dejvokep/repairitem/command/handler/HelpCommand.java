@@ -20,7 +20,7 @@ public class HelpCommand implements FunctionHandler {
     }
 
     @Override
-    public void accept(@NotNull CommandContext<CommandSender> context, @NotNull CommandFunction function) {
+    public void accept(@NotNull CommandContext<CommandSender> context) {
         plugin.getMessenger().send(context, "help");
     }
 }

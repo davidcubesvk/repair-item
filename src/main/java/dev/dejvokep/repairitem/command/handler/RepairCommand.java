@@ -15,13 +15,15 @@ import org.jetbrains.annotations.NotNull;
 public class RepairCommand implements FunctionHandler {
 
     private final RepairItem plugin;
+    private final CommandFunction function;
 
-    public RepairCommand(@NotNull RepairItem plugin) {
+    public RepairCommand(@NotNull RepairItem plugin, @NotNull CommandFunction function) {
         this.plugin = plugin;
+        this.function = function;
     }
 
     @Override
-    public void accept(@NotNull CommandContext<CommandSender> context, @NotNull CommandFunction function) {
+    public void accept(@NotNull CommandContext<CommandSender> context) {
         Sender sender = Sender.of(context.getSender());
         String targetName = context.getOrDefault("target", null);
 
