@@ -14,9 +14,9 @@
 # Command:
 command:
   # Custom function arguments ("/repair <function>"):
-  # - INFO >> This configuration is used to bind custom command arguments ("/repair <argument>") to functions. For
-  #           example, specifying "inv" in the list for inventory repair will cause "/repair inv" to repair one's
-  #           inventory. Leave as empty list ([]) to disable the function.
+  # - This configuration is used to bind custom command arguments ("/repair <argument>") to functions. For example,
+  #   specifying "inv" in the list for inventory repair will cause "/repair inv" to repair one's inventory. Leave as
+  #   empty list ([]) to disable the function.
   # - IMPORTANT >> One argument can only be assigned to one function (you cannot bind one argument to multiple functions).
   function:
     # Arguments assigned to plugin reload:
@@ -64,15 +64,15 @@ command:
       - "*"
 #
 # Blocked items:
-# - INFO >> All sections need to have this format:
-#           - attribute: value
-#             [attribute: value]
-#             ...
-#           You can specify type, name, lore, enchantments, flags and unbreakable state for each item. The example below
-#           shows how all these attributes can be specified.
-#           An item is considered blocked if all attributes specified here match the ones of the item. That means
-#           specifying lore as an empty array also requires the item not to have any lore in order to be blocked; if
-#           omitted, lore is not compared.
+# - All sections need to have this format:
+#   - attribute: value
+#     [attribute: value]
+#     ...
+# - You can specify type, name, lore, enchantments, flags and unbreakable state for each item. The example below shows
+#   how all these attributes can be specified. Learn more on the wiki.
+# - An item is considered blocked if its attributes matches all attributes of any item specified here. That means
+#   specifying lore as an empty array also requires the item not to have any lore in order to be blocked; if omitted,
+#   lore is not compared.
 blocked-items:
   # A blocked item:
   - type: "BOW"
@@ -81,30 +81,29 @@ blocked-items:
     # The lore (one list element per line):
     lore: []
     # List of enchantments:
-    # - INFO >> Each enchantment should be specified as "enchantment:level". For enchantment names, use the constants
-    #           provided by the API for your server version (the latest list always available at
-    #           https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html).
-    #           For enchantments which do not have levels, specify the level as 1. To match an enchantment at any level,
-    #           specify it as ?.
+    # - Each enchantment should be specified as "enchantment:level". For enchantment names, use the constants provided
+    #   by the API for your server version (the latest list always available at
+    #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html).
+    # - For enchantments which do not have levels, specify the level as 1. To match an enchantment at any level,
+    #   specify it as ?.
     enchantments: []
     # List of flags (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html):
     flags: []
     # The unbreakable state:
-    # - INFO >> This states whether the item will not lose durability. Although having similar name, this does not refer
-    #           to the "Unbreaking" enchantment, rather this refers to a state items can have and which can be
-    #           manipulated exclusively by the server software (including plugins).
+    # - This states whether the item will not lose durability. Although having similar name, this does not refer to the
+    #   "Unbreaking" enchantment, this rather refers to a state items can have and which can be manipulated exclusively
+    #   by the server software (including plugins).
     unbreakable: false
 #
 # Enable metrics:
-# - INFO >> Anonymous data sending including but not limited to country in which is the server hosted, number of cores,
-#           amount of players online. These statistics are used to determine the usage of the plugin and are freely
-#           viewable online.
-#           When changed, a server restart is needed to take effect.
+# - Anonymous data sending including but not limited to country in which is the server hosted, number of cores, amount
+#   of players online. These statistics are used to determine the usage of the plugin and are freely viewable online.
+# - A server restart is needed for a change to take effect.
 metrics: true
 #
 # Command messages:
-# - INFO >> If you do not want certain messages to be sent, leave them as "". To send a multiline message, define the
-#           lines as a list, as shown below at the help page.
+# - If you do not want certain messages to be sent, leave them as "".
+# - To send a multiline message, define the lines as a list, as shown below at the help page.
 messages:
   # If the sender uses an invalid format of a command:
   invalid-format: "&7[&aRepairItem&7] Invalid format. Please use &a/repair help &7to see all commands."
@@ -124,14 +123,14 @@ messages:
   # Repair functions:
   repair:
     # Sent to the command sender:
-    # - INFO >> If [target] is omitted, or the specified target is the command sender, only these messages will be sent.
+    # - If [target] is omitted, or the specified target is the command sender, only these messages will be sent.
     sender:
       # Placeholder for {target}:
       target-placeholder:
         # Replace with this if issuing a self-repair (no [target] argument, or the specified target is the command issuer):
         self: "you"
         # Replace with this if issuing a repair for all players:
-        # - INFO >> If only one player was online, their name is used.
+        # - If only one player was online, their name is used instead as if they were specified in the argument.
         all: "all"
         # If [target] is a specific player, the placeholder will be replaced with their name.
       # Error:
@@ -146,8 +145,8 @@ messages:
         # Off-hand repair was issued while using server versions older than 1.9:
         unsupported: "&7[&aRepairItem&7] &cOff-hand repair is not supported in versions older than 1.9."
         # An unknown error occurred:
-        # - INFO >> This error should never occur under normal conditions. If it does, please restart the server and report
-        #           any related errors to the developer.
+        # - This error should never occur under normal conditions. If it does, please restart the server and report any
+        #   related errors to the developer.
         unknown: "&7[&aRepairItem&7] An unknown error occurred. Please see the console and try again."
       # All items were repaired:
       # - PLACEHOLDERS >> {target}: the target player's name, or a configured placeholder
@@ -179,7 +178,7 @@ messages:
       #                   {repaired}: amount of items repaired
       off-hand: "&7[&aRepairItem&7] Off-hand of player &a{target} &7was repaired."
     # Sent to the target player(s):
-    # - INFO >> Sent to target players and only if the [target] argument is specified and is not the command issuer.
+    # - Sent to target players and only if the [target] argument is specified and is not the command issuer.
     target:
       # Placeholder for {sender}:
       sender-placeholder:
@@ -193,8 +192,8 @@ messages:
         # Off-hand repair was issued while using server versions older than 1.9:
         unsupported: ""
         # An unknown error occurred:
-        # - INFO >> This error should never occur under normal conditions. If it does, please restart the server and report
-        #           any related errors to the developer.
+        # - This error should never occur under normal conditions. If it does, please restart the server and report any
+        #   related errors to the developer.
         unknown: ""
       # All items were repaired:
       # - PLACEHOLDERS >> {sender}: the sender player's name, or a configured placeholder
