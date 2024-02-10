@@ -24,7 +24,7 @@
     <!-- Artifact data -->
     <groupId>dev.dejvokep</groupId>
     <artifactId>repair-item</artifactId>
-    <version>1.7</version>
+    <version>1.8</version>
     <developers>
         <developer>
             <name>dejvokep</name>
