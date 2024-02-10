@@ -16,8 +16,7 @@
 package dev.dejvokep.repairitem.repair;
 
 import dev.dejvokep.repairitem.RepairItem;
-import dev.dejvokep.repairitem.command.CommandFunction;
-import dev.dejvokep.repairitem.utils.BlockedItem;
+import dev.dejvokep.repairitem.command.function.CommandFunction;
 import dev.dejvokep.repairitem.utils.IntRange;
 import dev.dejvokep.repairitem.utils.VersionConstants;
 import org.bukkit.Material;

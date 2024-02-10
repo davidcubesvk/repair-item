@@ -1,6 +1,7 @@
-package dev.dejvokep.repairitem;
+package dev.dejvokep.repairitem.utils;
 
 import cloud.commandframework.context.CommandContext;
+import dev.dejvokep.repairitem.RepairItem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

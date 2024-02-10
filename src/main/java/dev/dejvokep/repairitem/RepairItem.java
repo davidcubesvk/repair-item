@@ -15,24 +15,20 @@
  */
 package dev.dejvokep.repairitem;
 
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.bukkit.BukkitCommandManager;
-import cloud.commandframework.execution.CommandExecutionCoordinator;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import dev.dejvokep.repairitem.command.CommandRegistrar;
 import dev.dejvokep.repairitem.repair.Repairer;
+import dev.dejvokep.repairitem.utils.Messenger;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.logging.Level;
 
 /**

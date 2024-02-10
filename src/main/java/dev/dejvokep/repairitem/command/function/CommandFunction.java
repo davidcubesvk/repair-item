@@ -1,4 +1,4 @@
-package dev.dejvokep.repairitem.command;
+package dev.dejvokep.repairitem.command.function;
 
 import dev.dejvokep.repairitem.RepairItem;
 import dev.dejvokep.repairitem.command.handler.HelpCommand;

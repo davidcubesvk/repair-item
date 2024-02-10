@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.dejvokep.repairitem.utils;
+package dev.dejvokep.repairitem.repair;
 
 import dev.dejvokep.repairitem.RepairItem;
 import org.bukkit.ChatColor;

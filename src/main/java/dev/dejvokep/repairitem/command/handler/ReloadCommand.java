@@ -2,7 +2,7 @@ package dev.dejvokep.repairitem.command.handler;
 
 import cloud.commandframework.context.CommandContext;
 import dev.dejvokep.repairitem.RepairItem;
-import dev.dejvokep.repairitem.command.FunctionHandler;
+import dev.dejvokep.repairitem.command.function.FunctionHandler;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

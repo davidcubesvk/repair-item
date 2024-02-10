@@ -1,4 +1,4 @@
-package dev.dejvokep.repairitem.command;
+package dev.dejvokep.repairitem.command.wrapper;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.route.Route;

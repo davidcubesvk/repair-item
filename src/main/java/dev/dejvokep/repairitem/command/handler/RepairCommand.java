@@ -2,10 +2,10 @@ package dev.dejvokep.repairitem.command.handler;
 
 import cloud.commandframework.context.CommandContext;
 import dev.dejvokep.repairitem.RepairItem;
-import dev.dejvokep.repairitem.command.CommandFunction;
-import dev.dejvokep.repairitem.command.FunctionHandler;
-import dev.dejvokep.repairitem.command.Sender;
-import dev.dejvokep.repairitem.command.Target;
+import dev.dejvokep.repairitem.command.function.CommandFunction;
+import dev.dejvokep.repairitem.command.function.FunctionHandler;
+import dev.dejvokep.repairitem.command.wrapper.Sender;
+import dev.dejvokep.repairitem.command.wrapper.Target;
 import dev.dejvokep.repairitem.repair.RepairResult;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

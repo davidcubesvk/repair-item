@@ -15,7 +15,7 @@
  */
 package dev.dejvokep.repairitem.repair;
 
-import dev.dejvokep.repairitem.command.CommandFunction;
+import dev.dejvokep.repairitem.command.function.CommandFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

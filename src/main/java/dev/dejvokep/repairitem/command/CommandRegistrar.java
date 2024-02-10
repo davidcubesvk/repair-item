@@ -21,6 +21,8 @@ import cloud.commandframework.bukkit.BukkitCommandManager;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import dev.dejvokep.repairitem.RepairItem;
+import dev.dejvokep.repairitem.command.function.CommandFunction;
+import dev.dejvokep.repairitem.command.function.FunctionHandler;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
