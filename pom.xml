@@ -155,8 +155,8 @@
         <!-- Annotations -->
         <dependency>
             <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <artifactId>annotations-java5</artifactId>
+            <version>24.0.1</version>
         </dependency>
     </dependencies>
 </project>
