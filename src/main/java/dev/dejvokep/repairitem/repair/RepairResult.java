@@ -17,8 +17,10 @@ package dev.dejvokep.repairitem.repair;
 
 import dev.dejvokep.repairitem.command.CommandFunction;
 
+import java.util.function.Function;
+
 /**
- * A result of a repair operation.
+ * A class representing the result of a repair operation.
  */
 public class RepairResult {
 
@@ -29,86 +31,109 @@ public class RepairResult {
         /**
          * Succeeded (at least one item was repaired).
          */
-        SUCCESS(null),
-        ERROR_NOT_REPAIRED(""),
-        ERROR_UNSUPPORTED(""),
-        ERROR_UNKNOWN(""),
+        SUCCESS(CommandFunction::getPath),
         /**
-         * Failed because of an error (generalized message).
+         * No items could be repaired.
          */
-        FAIL_GENERALIZED("generalized"),
+        ERROR_NOT_REPAIRED(function -> "error.not-repaired"),
         /**
-         * Failed because no item was found.
+         * Trying to run an unsupported repair function.
          */
-        FAIL_NO_ITEM("specific.no-repairable-item"),
+        ERROR_UNSUPPORTED(function -> "error.unsupported"),
         /**
-         * Failed because no repairable item was found.
+         * An unknown error occurred.
          */
-        FAIL_UNREPAIRABLE("specific.no-repairable-item"),
-        /**
-         * Failed because all items are blocked.
-         */
-        FAIL_BLOCKED("specific.no-repairable-item"),
-        /**
-         * Failed because all items are already repaired.
-         */
-        FAIL_ALREADY_REPAIRED("specific.no-repairable-item"),
-        /**
-         * Failed because the operation is not supported.
-         */
-        FAIL_UNSUPPORTED("specific.unsupported"),
-        /**
-         * failed because of other error.
-         */
-        FAIL_OTHER("specific.other");
+        ERROR_UNKNOWN(function -> "error.unknown");
 
-        //The path
-        private final String path;
+        private final Function<CommandFunction, String> pathConstructor;
 
         /**
-         * Initializes the path.
+         * Initializes the status.
          *
-         * @param path the configuration file message path (in root section <code>fail</code>)
+         * @param pathConstructor a constructor for the corresponding function status message path
          */
-        Status(String path) {
-            this.path = path;
+        Status(Function<CommandFunction, String> pathConstructor) {
+            this.pathConstructor = pathConstructor;
         }
 
         /**
-         * Returns the configuration file message path of the status.
+         * Returns the status message path for the given function.
          *
-         * @return the configuration file message path of the status
+         * @return the status message path for the given function
          */
         public String getPath(CommandFunction function) {
-            return path;
+            return pathConstructor.apply(function);
         }
     }
 
-    //Status
     private final Status status;
-    //Amount of items repaired
-    private final byte repaired;
+    private final int repaired;
 
     /**
      * Initializes the result with the given status and amount of items repaired.
      *
-     * @param status   the status of the operation
-     * @param repaired the amount of items repaired
+     * @param status   the status
+     * @param repaired the amount of items repaired, must not be negative
      */
-    RepairResult(Status status, byte repaired) {
+    private RepairResult(Status status, int repaired) {
+        if (repaired < 0)
+            throw new IllegalArgumentException("Repaired items count cannot be less than 0!");
+
         this.status = status;
         this.repaired = repaired;
     }
 
     /**
-     * Initializes the result with the given status. Calls the {@link #RepairResult(Status, byte)} constructor. If the
-     * status is {@link Status#SUCCESS}, repaired amount of items is automatically set to <code>1</code> (otherwise
-     * <code>0</code>).
+     * Merges this with the given result.
+     * <p>
+     * The status of the returned result will be:
+     * <ul>
+     * <li><code>this.result</code> if <code>this.result == that.result</code></li>
+     * <li><code>that.result</code> if <code>this</code> is an empty result</li>
+     * <li>{@link Status#SUCCESS} if <code>this.result != that.result</code> and <code>this.repaired + that.repaired > 0</code></li>
+     * <li>{@link Status#ERROR_NOT_REPAIRED} if <code>this.result != that.result</code> and <code>this.repaired + that.repaired == 0</code></li>
+     * </ul>
+     * The amount of repaired items will be the sum of amounts of repaired items of the both results.
+     * <p>
+     * Trying to merge with an empty result will result in an {@link IllegalArgumentException}.
      *
-     * @param status the status of the operation
+     * @param that the result to merge with
+     * @return the merged result
      */
-    RepairResult(Status status) {
-        this(status, status == Status.SUCCESS ? (byte) 1 : (byte) 0);
+    public RepairResult merge(RepairResult that) {
+        if (that.status == null)
+            throw new IllegalArgumentException("Cannot merge with an empty result!");
+
+        int repaired = this.repaired + that.repaired;
+        return new RepairResult(this.status == null ? that.status : this.status == that.status ? this.status : repaired > 0 ? Status.SUCCESS : Status.ERROR_NOT_REPAIRED, repaired);
+    }
+
+    /**
+     * Initializes an empty result ({@link #getStatus()} will be <code>null</code>).
+     *
+     * @return an empty result
+     */
+    public static RepairResult empty() {
+        return new RepairResult(null, 0);
+    }
+
+    /**
+     * Initializes a success result (with one repaired item).
+     *
+     * @return the success result
+     */
+    public static RepairResult success() {
+        return new RepairResult(Status.SUCCESS, 1);
+    }
+
+    /**
+     * Initializes an error result (with no repaired item).
+     *
+     * @param status the status to initialize with
+     * @return the error result
+     */
+    public static RepairResult error(Status status) {
+        return new RepairResult(status, 0);
     }
 
     /**
@@ -125,7 +150,7 @@ public class RepairResult {
      *
      * @return the amount of items repaired
      */
-    public byte getRepaired() {
+    public int getRepaired() {
         return repaired;
     }
 }
