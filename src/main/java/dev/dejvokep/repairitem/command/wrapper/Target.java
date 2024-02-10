@@ -33,11 +33,11 @@ public class Target {
     /**
      * Route to the replacement for the <code>{target}</code> placeholder when issuing a self repair.
      */
-    private static final Route ROUTE_REPLACEMENT_SELF = Route.fromString("messages.repair.sender.target-placeholder.self");
+    public static final Route ROUTE_REPLACEMENT_SELF = Route.fromString("messages.repair.sender.target-placeholder.self");
     /**
      * Route to the replacement for the <code>{target}</code> placeholder when issuing a repair for all players.
      */
-    private static final Route ROUTE_REPLACEMENT_ALL = Route.fromString("messages.repair.sender.target-placeholder.all");
+    public static final Route ROUTE_REPLACEMENT_ALL = Route.fromString("messages.repair.sender.target-placeholder.all");
 
     private final Collection<? extends Player> players;
 
