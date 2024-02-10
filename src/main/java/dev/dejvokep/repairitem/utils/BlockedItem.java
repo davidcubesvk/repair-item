@@ -15,14 +15,14 @@
  */
 package dev.dejvokep.repairitem.utils;
 
-import org.bukkit.Bukkit;
+import dev.dejvokep.repairitem.RepairItem;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
@@ -33,166 +33,111 @@ import java.util.logging.Level;
 public class BlockedItem {
 
     /**
-     * Configuration file path to the item's type.
+     * Path to the item's type.
      */
     public static final String PATH_TYPE = "type";
 
     /**
-     * Configuration file path to the item's name.
+     * Path to the item's name.
      */
     public static final String PATH_NAME = "name";
 
     /**
-     * Configuration file path to the item's lore.
+     * Path to the item's lore.
      */
     public static final String PATH_LORE = "lore";
 
     /**
-     * Configuration file path to the item's enchantments.
+     * Path to the item's enchantments.
      */
     public static final String PATH_ENCHANTMENTS = "enchantments";
 
     /**
-     * Configuration file path to the item's flags.
+     * Path to the item's flags.
      */
     public static final String PATH_FLAGS = "flags";
 
     /**
-     * Configuration file path to the item's unbreakable state.
+     * Path to the item's unbreakable state.
      */
     public static final String PATH_UNBREAKABLE = "unbreakable";
 
-    /**
-     * The method used to get enchantment by keys.
-     *
-     * @see #getGetEnchantmentByKeyMethod()
-     */
-    public static final Method getEnchantmentByKeyMethod = getGetEnchantmentByKeyMethod();
-
-    /**
-     * The method used to get the game's namespace.
-     *
-     * @see #getGameNamespaceMethod()
-     */
-    public static final Method gameNamespaceMethod = getGameNamespaceMethod();
-
-    //Type
+    // Properties
     private Material type;
-    //Name
     private String name;
-    //Lore
     private final List<String> lore = new ArrayList<>();
-    //Enchantments and levels
     private final Map<Enchantment, Integer> enchantments = new HashMap<>();
-    //Flags
     private final Set<ItemFlag> flags = new HashSet<>();
-    //Unbreakable state
     private boolean unbreakable;
 
-    //If each property is set and whether the item's comparing is meta-dependent
+    // Property flags
     private boolean typeSet = false, nameSet = false, loreSet = false, enchantmentsSet = false, flagsSet = false,
             unbreakableSet = false, metaDependent = false;
 
-    //If to use the old enchantment naming
-    private final boolean oldEnchantments;
-
     /**
-     * Initializes the blocked item with the given map, in which the item properties are.
+     * Creates a blocked item using the properties stored in the given map. The property key definitions must adhere to
+     * the format defined by the class constants.
      *
-     * @param section a map representing the configuration section containing the properties (directly)
+     * @param plugin  the plugin instance, used only for logging
+     * @param section a section map representing containing the properties
      */
-    public BlockedItem(Map<?, ?> section) {
-        //If to use the old enchantment naming
-        this.oldEnchantments = Versioner.isOlderThan(Versioner.V1_13);
-
+    public BlockedItem(RepairItem plugin, Map<?, ?> section) {
         try {
-            //If type is set
+            // Type
             if (section.containsKey(PATH_TYPE)) {
-                //Get
                 type = Material.valueOf((String) section.get(PATH_TYPE));
-                //Is set
                 typeSet = true;
             }
 
-            //If name is set
+            // Name
             if (section.containsKey(PATH_NAME)) {
-                //Get
                 name = (String) section.get(PATH_NAME);
-                //Is set
                 metaDependent = nameSet = true;
             }
 
-            //If lore is set
+            // Lore
             if (section.containsKey(PATH_LORE)) {
-                //Cast to iterable
-                Iterable<?> lore = (Iterable<?>) section.get(PATH_LORE);
-                //Go through all lore lines
-                for (Object line : lore)
-                    //Add
-                    this.lore.add((String) line);
-                //Is set
+                ((Collection<?>) section.get(PATH_LORE)).forEach(line -> this.lore.add(line.toString()));
                 metaDependent = loreSet = true;
             }
 
-            //If enchantments are set
+            // Enchantments
             if (section.containsKey(PATH_ENCHANTMENTS)) {
-                //Cast to iterable
-                Iterable<?> enchantments = (Iterable<?>) section.get(PATH_ENCHANTMENTS);
-                //The enchantment data (reused)
-                String[] data;
-                //Go through all enchantments
+                Collection<?> enchantments = (Collection<?>) section.get(PATH_ENCHANTMENTS);
                 for (Object enchantment : enchantments) {
-                    //Split the data
-                    data = ((String) enchantment).split(":");
-                    //Put into the map
+                    String[] data = enchantment.toString().split(":");
                     this.enchantments.put(getEnchantment(data[0]), Integer.valueOf(data[1]));
                 }
-                //Is set
                 metaDependent = enchantmentsSet = true;
             }
 
-            //If flags are set
+            // Flags
             if (section.containsKey(PATH_FLAGS)) {
-                //Cast to iterable
-                Iterable<?> itemFlags = (Iterable<?>) section.get(PATH_FLAGS);
-                //Go through all flags
-                for (Object flag : itemFlags)
-                    flags.add(ItemFlag.valueOf((String) flag));
-                //Is set
+                ((Collection<?>) section.get(PATH_FLAGS)).forEach(flag -> this.flags.add(ItemFlag.valueOf(flag.toString())));
                 metaDependent = flagsSet = true;
             }
 
-            //If unbreakable is set
+            // Unbreakable
             if (section.containsKey(PATH_UNBREAKABLE)) {
-                //Get
-                unbreakable = (Boolean) section.get(PATH_UNBREAKABLE);
-                //Is set
+                unbreakable = (boolean) section.get(PATH_UNBREAKABLE);
                 metaDependent = unbreakableSet = true;
             }
         } catch (Exception ex) {
-            //Log
-            Bukkit.getLogger().log(Level.SEVERE, "[RepairItem] Some of the blocked items could not be loaded; please reload the plugin and check the configuration. If the problem persists, please report it.", ex);
+            plugin.getLogger().log(Level.SEVERE, "Some of the blocked items could not be loaded; please reload the plugin and check the configuration. If the problem persists, please report it.", ex);
         }
     }
 
     /**
-     * Returns an enchantment by the given name.
-     * <p>
-     * If any reflection methods failed to load, returns <code>null</code>. Please note that there is an enchantment
-     * naming change between these two versions.
+     * Returns an enchantment by the given name, in accordance to the constants defined by {@link Enchantment}.
      *
-     * @param name the name of the enchantment (if using server version older than 1.9, it is automatically upper-cased,
-     *             otherwise lower-cased and spaces are replaced by underscores)
-     * @return the enchantment by the given name, or <code>null</code>
-     * @throws IllegalAccessException    if an error occurred in reflection method invocation
-     * @throws InvocationTargetException if an error occurred in reflection method invocation
+     * @param name the name of the enchantment (automatically upper-cased and spaces replaced by underscores)
+     * @return the enchantment by the given name
+     * @throws ReflectiveOperationException a reflective operation exception
      */
-    public Enchantment getEnchantment(String name) throws IllegalAccessException, InvocationTargetException {
-        //If the methods are null
-        if (!oldEnchantments && (getEnchantmentByKeyMethod == null || gameNamespaceMethod == null))
-            return null;
-
-        return oldEnchantments ? Enchantment.getByName(name.toUpperCase()) : (Enchantment) getEnchantmentByKeyMethod.invoke(null, gameNamespaceMethod.invoke(null, name.toLowerCase().replace(" ", "_")));
+    public Enchantment getEnchantment(String name) throws ReflectiveOperationException {
+        Field field = Enchantment.class.getDeclaredField(name.toUpperCase().replace(" ", "_"));
+        field.setAccessible(true);
+        return (Enchantment) field.get(null);
     }
 
     /**
@@ -203,82 +148,54 @@ public class BlockedItem {
      * @return whether the given item should (is) blocked
      */
     public boolean compare(ItemStack itemStack) {
-        //If the comparing is meta-dependent and item meta is not present
-        if (metaDependent && !itemStack.hasItemMeta())
-            return false;
-
-        //If type is set and they do not equal
+        // Type
         if (typeSet && type != itemStack.getType())
             return false;
 
-        //If comparing item metas
+        // Comparing item metas
         if (metaDependent) {
-            //The item meta
+            // Meta
             ItemMeta itemMeta = itemStack.getItemMeta();
+            if (itemMeta == null)
+                return false;
 
-            //If the name is set and they do not equal
+            // Name
             if (nameSet && (!itemMeta.hasDisplayName() || !name.equals(itemMeta.getDisplayName())))
                 return false;
-                //If the lore is set and they do not equal
-            else if (loreSet && (!itemMeta.hasLore() || !lore.equals(itemMeta.getLore())))
+            // Lore
+            if (loreSet && (!itemMeta.hasLore() || !lore.equals(itemMeta.getLore())))
                 return false;
-                //If the enchantments are set and they do not equal
-            else if (enchantmentsSet && (!itemMeta.hasEnchants() || !enchantments.equals(itemMeta.getEnchants())))
+            // Enchantments
+            if (enchantmentsSet && (!itemMeta.hasEnchants() || !compareMaps(enchantments, itemMeta.getEnchants())))
                 return false;
-                //If the flags are set and they do not equal
-            else if (flagsSet && !flags.equals(itemMeta.getItemFlags()))
+            // Flags
+            if (flagsSet && !flags.equals(itemMeta.getItemFlags()))
                 return false;
-                //If the unbreakable is set and they do not equal
-            else if (unbreakableSet && unbreakable != itemMeta.isUnbreakable())
+            // Unbreakable
+            if (unbreakableSet && unbreakable != itemMeta.isUnbreakable())
                 return false;
         }
 
-        //Block the item
+        // Blocked
         return true;
     }
 
-
     /**
-     * Returns the <code>getByKey</code> method from the {@link Enchantment} class, or <code>null</code> if an error
-     * occurred/not supported (server versions 1.12 and older).
+     * Compares the given maps and returns whether the maps are equal. Two maps are considered equal by this method if
+     * both contain the same <code>key=value</code> pairs.
      *
-     * @return the method from the {@link Enchantment} class, or <code>null</code>
+     * @param a   the first of the maps to compare
+     * @param b   the second of the maps to compare
+     * @param <K> key type
+     * @param <V> value type
+     * @return if the maps are equal
      */
-    private static Method getGetEnchantmentByKeyMethod() {
-        //If not supported
-        if (Versioner.isOlderThan(Versioner.V1_13))
-            return null;
-
-        try {
-            //Return the method
-            return Class.forName("org.bukkit.enchantments.Enchantment").getDeclaredMethod("getByKey", Class.forName("org.bukkit.NamespacedKey"));
-        } catch (ClassNotFoundException | NoSuchMethodException ex) {
-            //Log
-            Bukkit.getLogger().log(Level.SEVERE, "[RepairItem] Some of the resources to run the plugin could not be loaded; please restart the server. If the problem persists, please report it.", ex);
-            //Return null
-            return null;
-        }
-    }
-
-    /**
-     * Returns the game's namespace, or <code>null</code> if an error occurred/not supported (server versions 1.12 and
-     * older).
-     *
-     * @return the game's namespace, or <code>null</code>
-     */
-    private static Method getGameNamespaceMethod() {
-        //If not supported
-        if (Versioner.isOlderThan(Versioner.V1_13))
-            return null;
-
-        try {
-            //Return the method
-            return Class.forName("org.bukkit.NamespacedKey").getDeclaredMethod("minecraft", String.class);
-        } catch (ClassNotFoundException | NoSuchMethodException ex) {
-            //Log
-            Bukkit.getLogger().log(Level.SEVERE, "[RepairItem] Some of the resources to run the plugin could not be loaded; please restart the server. If the problem persists, please report it.", ex);
-            //Return null
-            return null;
-        }
+    private <K, V> boolean compareMaps(Map<K, V> a, Map<K, V> b) {
+        if (a.size() != b.size())
+            return false;
+        for (K key : a.keySet())
+            if (!b.containsKey(key) || !a.get(key).equals(b.get(key)))
+                return false;
+        return true;
     }
 }
