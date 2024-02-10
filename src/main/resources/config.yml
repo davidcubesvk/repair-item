@@ -93,6 +93,13 @@ blocked-items:
     #           manipulated exclusively by the server software (including plugins).
     unbreakable: false
 #
+# Enable metrics:
+# - INFO >> Anonymous data sending including but not limited to country in which is the server hosted, number of cores,
+#           amount of players online. These statistics are used to determine the usage of the plugin and are freely
+#           viewable online.
+#           When changed, a server restart is needed to take effect.
+metrics: true
+#
 # Command messages:
 # - INFO >> If you do not want certain messages to be sent, leave them as "".
 messages:

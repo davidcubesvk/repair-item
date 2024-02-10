@@ -58,10 +58,9 @@ public class RepairItem extends JavaPlugin {
             return;
         }
 
-        //Initialize the repairer
+        // Initialize
         repairer = new Repairer(this);
-        //Load
-        repairer.reload();
+        messenger = new Messenger(this);
 
         // Commands
         try {
@@ -70,8 +69,11 @@ public class RepairItem extends JavaPlugin {
             getLogger().log(Level.SEVERE, "An unexpected error occurred whilst registering commands!", ex);
         }
 
-        //Initialize metrics
-        new Metrics(this, 9131);
+        // Metrics
+        if (config.getBoolean("metrics")) {
+            getLogger().info("Initializing metrics.");
+            new Metrics(this, 9131);
+        }
     }
 
     /**
@@ -93,10 +95,20 @@ public class RepairItem extends JavaPlugin {
         return repairer;
     }
 
+    /**
+     * Returns the command registrar.
+     *
+     * @return the command registrar
+     */
     public CommandRegistrar getCommandRegistrar() {
         return commandRegistrar;
     }
 
+    /**
+     * Returns the messenger.
+     *
+     * @return the messenger
+     */
     public Messenger getMessenger() {
         return messenger;
     }
