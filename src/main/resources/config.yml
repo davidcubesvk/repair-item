@@ -41,10 +41,10 @@ command:
     armor:
       - "armor"
       - "armour"
-    # Arguments assigned to hot-bar repair:
-    hot-bar:
-      - "hot-bar"
+    # Arguments assigned to hotbar repair:
+    hotbar:
       - "hotbar"
+      - "hot-bar"
     # Arguments assigned to both-hands repair:
     both-hands:
       - "both-hands"
