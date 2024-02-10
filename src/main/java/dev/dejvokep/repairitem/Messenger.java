@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.function.Function;
 
 /**
@@ -73,8 +74,27 @@ public class Messenger {
         if (sender instanceof Player && !((Player) sender).isOnline())
             return;
 
+        // Send
+        plugin.getConfiguration().getOptional(MESSAGE_PREFIX + messageId).ifPresent(obj -> {
+            if (obj instanceof Collection) {
+                for (Object message : (Collection<?>) obj)
+                    sendLine(sender, message.toString(), replacer);
+                return;
+            }
+
+            sendLine(sender, obj.toString(), replacer);
+        });
+    }
+
+    /**
+     * Sends message to the given sender. If provided, applies the given replacer to the message.
+     *
+     * @param sender   the sender to send to
+     * @param message  the message to send
+     * @param replacer replacer to apply to the message
+     */
+    public void sendLine(@NotNull CommandSender sender, @Nullable String message, @Nullable Function<String, String> replacer) {
         // Validate
-        String message = plugin.getConfiguration().getString(MESSAGE_PREFIX + messageId);
         if (message == null || message.isEmpty())
             return;
 
