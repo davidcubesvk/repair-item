@@ -17,6 +17,8 @@ package dev.dejvokep.repairitem.command;
 
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.BukkitCommandManager;
+import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import dev.dejvokep.repairitem.RepairItem;
 import org.bukkit.command.CommandSender;
@@ -25,11 +27,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Command executor for the main plugin command <code>/repair</code>.
  */
-public class Command {
+public class CommandRegistrar {
 
     /**
      * The base permission node.
@@ -44,9 +47,11 @@ public class Command {
      *
      * @param plugin the main plugin class
      */
-    public Command(@NotNull RepairItem plugin, @NotNull CommandManager<CommandSender> manager) {
+    public CommandRegistrar(@NotNull RepairItem plugin) throws Exception {
         //Set the plugin
         this.plugin = plugin;
+
+        CommandManager<CommandSender> manager = new BukkitCommandManager<>(plugin, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
 
         for (CommandFunction function : CommandFunction.values()) {
             List<String> literals = plugin.getConfiguration().getStringList("command.function." + function.getPath());
