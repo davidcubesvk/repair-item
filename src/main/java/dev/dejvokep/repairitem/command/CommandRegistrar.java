@@ -46,6 +46,7 @@ public class CommandRegistrar {
      * Initializes the command with the given main class.
      *
      * @param plugin the main plugin class
+     * @throws Exception thrown if failed to construct the command manager
      */
     public CommandRegistrar(@NotNull RepairItem plugin) throws Exception {
         //Set the plugin
