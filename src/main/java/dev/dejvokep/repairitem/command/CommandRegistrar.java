@@ -61,7 +61,7 @@ public class CommandRegistrar {
 
             // No literal to assign to the function
             if (literals.isEmpty())
-                return;
+                continue;
 
             // Aliases and handler
             String[] aliases = literals.size() == 1 ? new String[0] : literals.subList(1, literals.size()).toArray(new String[literals.size() - 1]);
@@ -73,6 +73,10 @@ public class CommandRegistrar {
                     .permission(String.format("%s.%s.self", PERMISSION_BASE, function.getPermission()))
                     .meta(CommandMeta.DESCRIPTION, function.getDescription())
                     .handler(handler::accept).build());
+
+            if (!function.hasTarget())
+                continue;
+
             manager.command(manager.commandBuilder("repair")
                     .literal(literals.get(0), aliases)
                     .argument(StringArgument.of("target"))
