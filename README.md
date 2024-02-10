@@ -13,6 +13,9 @@ repair all online players' items.
 Commands used to invoke these functions are completely customizable and can even be disabled. The hierarchical structure
 of the permissions allows you to define and have control over what the players can and cannot do.
 
+The plugin also allows you to block certain items from being repaired based on their type, name, lore, enchantment and
+other attributes.
+
 # 👍 Why to use RepairItem over other plugins?
 
 The simple installation, clear documentation and full customizability is the aim of this plugin, which you might not get
