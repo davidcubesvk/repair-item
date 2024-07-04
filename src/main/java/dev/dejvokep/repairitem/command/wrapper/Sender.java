@@ -29,7 +29,7 @@ public class Sender {
     /**
      * Route to the replacement for the <code>{sender}</code> placeholder when the sender is the console.
      */
-    public static final Route ROUTE_REPLACEMENT_CONSOLE = Route.fromString("messages.repair.target.source-placeholder.console");
+    public static final Route ROUTE_REPLACEMENT_CONSOLE = Route.fromString("messages.repair.target.sender-placeholder.console");
 
     private final CommandSender sender;
 
